@@ -1,0 +1,21 @@
+{
+  "name": "flimflam_sandbox",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "watchify -t babelify index.es6 -o index.js -v && open index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "snabbdom": "~0.4.2",
+    "ramda": "~0.21.0",
+    "flyd": "~0.2.2",
+    "flimflam-render": "0.0.4",
+    "form-serialize": "~0.7.1"
+  },
+  "devDependencies": {
+    "babelify": "6.4.0"
+  }
+}
