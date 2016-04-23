@@ -17,7 +17,7 @@ function view(ctx) {
     )
   , h('form', {on: {submit: ctx.streams.submit}}
   , [ h('input', {props: {name: 'reason[0]', type: 'text', placeholder: 'Add pro or con'}})
-      , h('input', {props: {name: 'reason[1]', type: 'number', placeholder: 'Add value'}})
+      , h('input', {props: {name: 'reason[1]', type: 'range', step: '1', min: '-10', max: '10'}})
       , h('button', {props: {type: 'submit'}}, 'Submit')
       ]
     )
@@ -42,8 +42,10 @@ function init(){
 
 function submit(ev, state) {
   ev.preventDefault()
-  let reason = serialize(ev.target, {hash: true}).reason
+  let form = ev.target
+  let reason = serialize(form, {hash: true}).reason
   let proOrCon = reason[1] > 0 ? 'pros' : 'cons'
+  form.reset()
   return R.assocPath(['reasons', proOrCon], R.prepend(reason, state.reasons[proOrCon]), state) 
 }
 

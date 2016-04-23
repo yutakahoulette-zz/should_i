@@ -19405,7 +19405,7 @@ var container = document.getElementById('container');
 var mapIndexed = _ramda2['default'].addIndex(_ramda2['default'].map);
 
 function view(ctx) {
-  return (0, _snabbdomH2['default'])('div', [(0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--pros', reasonsList(ctx.state.reasons.pros)), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: { name: 'reason[0]', type: 'text', placeholder: 'Add pro or con' } }), (0, _snabbdomH2['default'])('input', { props: { name: 'reason[1]', type: 'number', placeholder: 'Add value' } }), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
+  return (0, _snabbdomH2['default'])('div', [(0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--pros', reasonsList(ctx.state.reasons.pros)), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: { name: 'reason[0]', type: 'text', placeholder: 'Add pro or con' } }), (0, _snabbdomH2['default'])('input', { props: { name: 'reason[1]', type: 'range', step: '1', min: '-10', max: '10' } }), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
 }
 
 function reasonsList(reasons) {
@@ -19427,8 +19427,10 @@ function init() {
 
 function submit(ev, state) {
   ev.preventDefault();
-  var reason = (0, _formSerialize2['default'])(ev.target, { hash: true }).reason;
+  var form = ev.target;
+  var reason = (0, _formSerialize2['default'])(form, { hash: true }).reason;
   var proOrCon = reason[1] > 0 ? 'pros' : 'cons';
+  form.reset();
   return _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].prepend(reason, state.reasons[proOrCon]), state);
 }
 
