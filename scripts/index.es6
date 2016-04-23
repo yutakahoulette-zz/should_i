@@ -4,15 +4,16 @@ import R from 'ramda'
 import flyd from 'flyd'
 import serialize from 'form-serialize'
 
-let container = document.getElementById('container')
+const container = document.getElementById('container')
+const mapIndexed = R.addIndex(R.map)
 
 function view(ctx) {
   return h('div', [
     h('ul.reasonsList.reasonsList--pros', 
-      R.map(reasonsList, R.filter((x) => x[1] > 0, ctx.state.reasons))
+      reasonsList(ctx.state.reasons.pros)
     )
   , h('ul.reasonsList.reasonsList--cons', 
-      R.map(reasonsList, R.filter((x) => x[1] < 0, ctx.state.reasons))
+      reasonsList(ctx.state.reasons.cons)
     )
   , h('form', {on: {submit: ctx.streams.submit}}
   , [ h('input', {props: {name: 'reason[0]', type: 'text', placeholder: 'Add pro or con'}})
@@ -23,23 +24,27 @@ function view(ctx) {
   ])
 }
 
-
-function reasonsList(reason) {
-  return h('li', `${reason[0]} gets ${reason[1]} points`)
+function reasonsList(reasons) {
+  return mapIndexed((reason, i) => h('li', {
+    attrs: {index: i, text: reason[0], rating: reason[1]}
+  , style: { height: `${Math.abs(reason[1]) * 5}px`}
+  })
+  , reasons)
 }
 
 function init(){
   return {
-    streams: { submit: flyd.stream() }
-  , updates: { submit: submit } 
-  , state:   {reasons: [] }
+    streams: {submit: flyd.stream()}
+  , updates: {submit: submit} 
+  , state:   {reasons: {pros:[], cons:[]}}
   }
 }
 
 function submit(ev, state) {
   ev.preventDefault()
   let reason = serialize(ev.target, {hash: true}).reason
-  return R.assoc('reasons', R.prepend(reason, state.reasons), state) 
+  let proOrCon = reason[1] > 0 ? 'pros' : 'cons'
+  return R.assocPath(['reasons', proOrCon], R.prepend(reason, state.reasons[proOrCon]), state) 
 }
 
 render(init(), view, container)
