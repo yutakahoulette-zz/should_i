@@ -1,10 +1,3 @@
-@import 'normalize.css';
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
-
-body {
-  font-family: 'Roboto Mono', Consolas, monospace;
-  padding: 20px;
-}
 .reasonsList {
   list-style-type: none;
   display: inline-block;
@@ -12,6 +5,8 @@ body {
 }
 .reasonsList li {
   margin-top: 1px;
+  line-height: 1.1;
+  font-size: 12px;
 }
 .reasonsList--pros li {
   background: green;

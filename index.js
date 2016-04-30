@@ -1,1 +1,0 @@
-console.error("Error: Cannot find module '/Users/yutakahoulette/flimflam_sandbox/index.es6' from '/Users/yutakahoulette/flimflam_sandbox'")

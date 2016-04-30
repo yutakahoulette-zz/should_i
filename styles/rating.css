@@ -1,0 +1,43 @@
+.ff-rating--pos:before,
+.ff-rating--neg:before {
+  display: inline-block;
+    color: grey;
+    font-size: 14px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.ff-rating--pos:before {
+  content: '\25B2';
+  transform: translateY(-2px);
+}
+
+.ff-rating--neg:before {
+  content: '\25BC';
+  transform: translateY(2px);
+}
+
+.ff-rating-input:hover .ff-rating--pos:hover,
+.ff-rating-input:hover .ff-rating--pos:hover ~ .ff-rating--pos,
+.ff-rating-input:checked ~ .ff-rating--pos:before {
+  color: green;
+}
+
+
+
+/* .rating:hover .rating-star:hover, */
+/* .rating:hover .rating-star:hover ~ .rating-star, */
+/* .rating-input:checked ~ .rating-star { */
+/*     background-position: 0 0; */
+/* } */
+
+/* .rating-star, */
+/* .rating:hover .rating-star { */
+/*     position: relative; */
+/*     float: right; */
+/*     display: block; */
+/*     width: 16px; */
+/*     height: 16px; */
+/*     background: url('http://kubyshkin.ru/samples/star-rating/star.png') 0 -16px; */
+/* } */
+

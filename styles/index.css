@@ -1,0 +1,39 @@
+@import 'normalize.css';
+@import 'fonts.css';
+@import 'graph.css';
+@import 'rating.css';
+
+* {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html {
+  border: 5px solid grey;
+  padding: 5px;
+}
+
+body {
+  border: 2px solid grey;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 10px;
+  display: relative;
+  padding-bottom: 100px;
+}
+
+.title {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.reasonsForm {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  left: 0;
+}
+

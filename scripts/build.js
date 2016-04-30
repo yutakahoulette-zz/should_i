@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/index.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/yutakahoulette/should_i/node_modules/flimflam-render/index.js":[function(require,module,exports){
 // Render a flimflam component using flyd, ramda, and snabbdom
 
 'use strict';
@@ -93,7 +93,7 @@ function toComponentStream(component, options) {
 module.exports = render;
 
 
-},{"flyd":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/lib/index.js","flyd/module/lift":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/module/lift/index.js","flyd/module/scanmerge":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/module/scanmerge/index.js","ramda":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/ramda/dist/ramda.js","snabbdom":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/snabbdom.js","snabbdom/modules/attributes":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/attributes.js","snabbdom/modules/class":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/class.js","snabbdom/modules/eventlisteners":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/eventlisteners.js","snabbdom/modules/props":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/props.js","snabbdom/modules/style":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/style.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/lib/index.js":[function(require,module,exports){
+},{"flyd":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/lib/index.js","flyd/module/lift":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/module/lift/index.js","flyd/module/scanmerge":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/module/scanmerge/index.js","ramda":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/ramda/dist/ramda.js","snabbdom":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/snabbdom.js","snabbdom/modules/attributes":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/attributes.js","snabbdom/modules/class":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/class.js","snabbdom/modules/eventlisteners":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/eventlisteners.js","snabbdom/modules/props":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/props.js","snabbdom/modules/style":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/style.js"}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/lib/index.js":[function(require,module,exports){
 var curryN = require('ramda/src/curryN');
 
 'use strict';
@@ -394,7 +394,7 @@ module.exports = {
   immediate: immediate,
 };
 
-},{"ramda/src/curryN":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/curryN.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/module/lift/index.js":[function(require,module,exports){
+},{"ramda/src/curryN":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/curryN.js"}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/module/lift/index.js":[function(require,module,exports){
 var flyd = require('../../lib');
 
 module.exports = function(f /* , streams */) {
@@ -406,7 +406,7 @@ module.exports = function(f /* , streams */) {
   }, streams);
 };
 
-},{"../../lib":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/lib/index.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/module/scanmerge/index.js":[function(require,module,exports){
+},{"../../lib":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/lib/index.js"}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/module/scanmerge/index.js":[function(require,module,exports){
 var flyd = require('../../lib');
 
 module.exports = flyd.curryN(2, function(pairs, acc) {
@@ -428,7 +428,7 @@ module.exports = flyd.curryN(2, function(pairs, acc) {
   }, streams));
 });
 
-},{"../../lib":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/lib/index.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/curryN.js":[function(require,module,exports){
+},{"../../lib":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/lib/index.js"}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/curryN.js":[function(require,module,exports){
 var _arity = require('./internal/_arity');
 var _curry1 = require('./internal/_curry1');
 var _curry2 = require('./internal/_curry2');
@@ -485,7 +485,7 @@ module.exports = _curry2(function curryN(length, fn) {
   return _arity(length, _curryN(length, [], fn));
 });
 
-},{"./internal/_arity":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_arity.js","./internal/_curry1":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js","./internal/_curry2":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry2.js","./internal/_curryN":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curryN.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_arity.js":[function(require,module,exports){
+},{"./internal/_arity":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_arity.js","./internal/_curry1":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js","./internal/_curry2":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry2.js","./internal/_curryN":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curryN.js"}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_arity.js":[function(require,module,exports){
 module.exports = function _arity(n, fn) {
   // jshint unused:vars
   switch (n) {
@@ -504,7 +504,7 @@ module.exports = function _arity(n, fn) {
   }
 };
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js":[function(require,module,exports){
 /**
  * Optimized internal two-arity curry function.
  *
@@ -525,7 +525,7 @@ module.exports = function _curry1(fn) {
   };
 };
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry2.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry2.js":[function(require,module,exports){
 var _curry1 = require('./_curry1');
 
 
@@ -559,7 +559,7 @@ module.exports = function _curry2(fn) {
   };
 };
 
-},{"./_curry1":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curryN.js":[function(require,module,exports){
+},{"./_curry1":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js"}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_curryN.js":[function(require,module,exports){
 var _arity = require('./_arity');
 
 
@@ -599,7 +599,7 @@ module.exports = function _curryN(length, received, fn) {
   };
 };
 
-},{"./_arity":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_arity.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/ramda/dist/ramda.js":[function(require,module,exports){
+},{"./_arity":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/flyd/node_modules/ramda/src/internal/_arity.js"}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/ramda/dist/ramda.js":[function(require,module,exports){
 //  Ramda v0.19.1
 //  https://github.com/ramda/ramda
 //  (c) 2013-2016 Scott Sauyet, Michael Hurley, and David Chambers
@@ -9047,13 +9047,13 @@ module.exports = function _curryN(length, received, fn) {
 
 }.call(this));
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/is.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/is.js":[function(require,module,exports){
 module.exports = {
   array: Array.isArray,
   primitive: function(s) { return typeof s === 'string' || typeof s === 'number'; },
 };
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/attributes.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/attributes.js":[function(require,module,exports){
 var booleanAttrs = ["allowfullscreen", "async", "autofocus", "autoplay", "checked", "compact", "controls", "declare", 
                 "default", "defaultchecked", "defaultmuted", "defaultselected", "defer", "disabled", "draggable", 
                 "enabled", "formnovalidate", "hidden", "indeterminate", "inert", "ismap", "itemscope", "loop", "multiple", 
@@ -9094,7 +9094,7 @@ function updateAttrs(oldVnode, vnode) {
 
 module.exports = {create: updateAttrs, update: updateAttrs};
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/class.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/class.js":[function(require,module,exports){
 function updateClass(oldVnode, vnode) {
   var cur, name, elm = vnode.elm,
       oldClass = oldVnode.data.class || {},
@@ -9114,7 +9114,7 @@ function updateClass(oldVnode, vnode) {
 
 module.exports = {create: updateClass, update: updateClass};
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/eventlisteners.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/eventlisteners.js":[function(require,module,exports){
 var is = require('../is');
 
 function arrInvoker(arr) {
@@ -9157,7 +9157,7 @@ function updateEventListeners(oldVnode, vnode) {
 
 module.exports = {create: updateEventListeners, update: updateEventListeners};
 
-},{"../is":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/is.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/props.js":[function(require,module,exports){
+},{"../is":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/is.js"}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/props.js":[function(require,module,exports){
 function updateProps(oldVnode, vnode) {
   var key, cur, old, elm = vnode.elm,
       oldProps = oldVnode.data.props || {}, props = vnode.data.props || {};
@@ -9177,7 +9177,7 @@ function updateProps(oldVnode, vnode) {
 
 module.exports = {create: updateProps, update: updateProps};
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/modules/style.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/modules/style.js":[function(require,module,exports){
 var raf = (window && window.requestAnimationFrame) || setTimeout;
 var nextFrame = function(fn) { raf(function() { raf(fn); }); };
 
@@ -9243,7 +9243,7 @@ function applyRemoveStyle(vnode, rm) {
 
 module.exports = {create: updateStyle, update: updateStyle, destroy: applyDestroyStyle, remove: applyRemoveStyle};
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/snabbdom.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/snabbdom.js":[function(require,module,exports){
 // jshint newcap: false
 /* global require, module, document, Element */
 'use strict';
@@ -9478,14 +9478,14 @@ function init(modules) {
 
 module.exports = {init: init};
 
-},{"./is":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/is.js","./vnode":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/vnode.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/vnode.js":[function(require,module,exports){
+},{"./is":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/is.js","./vnode":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/vnode.js"}],"/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/vnode.js":[function(require,module,exports){
 module.exports = function(sel, data, children, text, elm) {
   var key = data === undefined ? undefined : data.key;
   return {sel: sel, data: data, children: children,
           text: text, elm: elm, key: key};
 };
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/lib/index.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flyd/lib/index.js":[function(require,module,exports){
 'use strict';
 
 var curryN = require('ramda/src/curryN');
@@ -10113,7 +10113,7 @@ StreamTransformer.prototype['@@transducer/step'] = function(s, v) { return v; };
 
 module.exports = flyd;
 
-},{"ramda/src/curryN":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/curryN.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/curryN.js":[function(require,module,exports){
+},{"ramda/src/curryN":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/curryN.js"}],"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/curryN.js":[function(require,module,exports){
 var _arity = require('./internal/_arity');
 var _curry1 = require('./internal/_curry1');
 var _curry2 = require('./internal/_curry2');
@@ -10169,7 +10169,7 @@ module.exports = _curry2(function curryN(length, fn) {
   return _arity(length, _curryN(length, [], fn));
 });
 
-},{"./internal/_arity":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_arity.js","./internal/_curry1":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js","./internal/_curry2":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_curry2.js","./internal/_curryN":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_curryN.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_arity.js":[function(require,module,exports){
+},{"./internal/_arity":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_arity.js","./internal/_curry1":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js","./internal/_curry2":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_curry2.js","./internal/_curryN":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_curryN.js"}],"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_arity.js":[function(require,module,exports){
 module.exports = function _arity(n, fn) {
   /* eslint-disable no-unused-vars */
   switch (n) {
@@ -10188,7 +10188,7 @@ module.exports = function _arity(n, fn) {
   }
 };
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js":[function(require,module,exports){
 var _isPlaceholder = require('./_isPlaceholder');
 
 
@@ -10210,7 +10210,7 @@ module.exports = function _curry1(fn) {
   };
 };
 
-},{"./_isPlaceholder":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_isPlaceholder.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_curry2.js":[function(require,module,exports){
+},{"./_isPlaceholder":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_isPlaceholder.js"}],"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_curry2.js":[function(require,module,exports){
 var _curry1 = require('./_curry1');
 var _isPlaceholder = require('./_isPlaceholder');
 
@@ -10240,7 +10240,7 @@ module.exports = function _curry2(fn) {
   };
 };
 
-},{"./_curry1":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js","./_isPlaceholder":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_isPlaceholder.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_curryN.js":[function(require,module,exports){
+},{"./_curry1":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_curry1.js","./_isPlaceholder":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_isPlaceholder.js"}],"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_curryN.js":[function(require,module,exports){
 var _arity = require('./_arity');
 var _isPlaceholder = require('./_isPlaceholder');
 
@@ -10282,14 +10282,14 @@ module.exports = function _curryN(length, received, fn) {
   };
 };
 
-},{"./_arity":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_arity.js","./_isPlaceholder":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_isPlaceholder.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/node_modules/ramda/src/internal/_isPlaceholder.js":[function(require,module,exports){
+},{"./_arity":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_arity.js","./_isPlaceholder":"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_isPlaceholder.js"}],"/Users/yutakahoulette/should_i/node_modules/flyd/node_modules/ramda/src/internal/_isPlaceholder.js":[function(require,module,exports){
 module.exports = function _isPlaceholder(a) {
   return a != null &&
          typeof a === 'object' &&
          a['@@functional/placeholder'] === true;
 };
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/form-serialize/index.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/form-serialize/index.js":[function(require,module,exports){
 // get successful control from form and assemble into object
 // http://www.w3.org/TR/html401/interact/forms.html#h-17.13.2
 
@@ -10551,7 +10551,7 @@ function str_serialize(result, key, value) {
 
 module.exports = serialize;
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/ramda/dist/ramda.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js":[function(require,module,exports){
 //  Ramda v0.21.0
 //  https://github.com/ramda/ramda
 //  (c) 2013-2016 Scott Sauyet, Michael Hurley, and David Chambers
@@ -19337,7 +19337,7 @@ module.exports = serialize;
 
 }.call(this));
 
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/snabbdom/h.js":[function(require,module,exports){
+},{}],"/Users/yutakahoulette/should_i/node_modules/snabbdom/h.js":[function(require,module,exports){
 var VNode = require('./vnode');
 var is = require('./is');
 
@@ -19372,11 +19372,11 @@ module.exports = function h(sel, b, c) {
   return VNode(sel, data, children, text, undefined);
 };
 
-},{"./is":"/Users/yutakahoulette/flimflam_sandbox/node_modules/snabbdom/is.js","./vnode":"/Users/yutakahoulette/flimflam_sandbox/node_modules/snabbdom/vnode.js"}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/snabbdom/is.js":[function(require,module,exports){
-arguments[4]["/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/is.js"][0].apply(exports,arguments)
-},{}],"/Users/yutakahoulette/flimflam_sandbox/node_modules/snabbdom/vnode.js":[function(require,module,exports){
-arguments[4]["/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/node_modules/snabbdom/vnode.js"][0].apply(exports,arguments)
-},{}],"/Users/yutakahoulette/flimflam_sandbox/scripts/index.es6":[function(require,module,exports){
+},{"./is":"/Users/yutakahoulette/should_i/node_modules/snabbdom/is.js","./vnode":"/Users/yutakahoulette/should_i/node_modules/snabbdom/vnode.js"}],"/Users/yutakahoulette/should_i/node_modules/snabbdom/is.js":[function(require,module,exports){
+arguments[4]["/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/is.js"][0].apply(exports,arguments)
+},{}],"/Users/yutakahoulette/should_i/node_modules/snabbdom/vnode.js":[function(require,module,exports){
+arguments[4]["/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/vnode.js"][0].apply(exports,arguments)
+},{}],"/Users/yutakahoulette/should_i/scripts/index.es6":[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -19405,14 +19405,24 @@ var container = document.getElementById('container');
 var mapIndexed = _ramda2['default'].addIndex(_ramda2['default'].map);
 
 function view(ctx) {
-  return (0, _snabbdomH2['default'])('div', [(0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--pros', reasonsList(ctx.state.reasons.pros)), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: { name: 'reason[0]', type: 'text', placeholder: 'Add pro or con' } }), (0, _snabbdomH2['default'])('input', { props: { name: 'reason[1]', type: 'range', step: '1', min: '-10', max: '10' } }), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
+  return (0, _snabbdomH2['default'])('div.container', [(0, _snabbdomH2['default'])('h1.title', ['Should I ', (0, _snabbdomH2['default'])('span', { props: { contentEditable: 'true' } }, 'asdf')]), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--pros', reasonsList(ctx.state.reasons.pros)), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('form.reasonsForm', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: { name: 'reason[0]', type: 'text', placeholder: 'Add pro or con' } })
+  // , h('input', {props: {name: 'reason[1]', type: 'range', step: '1', min: '-10', max: '10'}})
+  , ratingInput({ range: [-10, 10], name: 'reason[1]' }), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
+}
+
+function ratingInput(obj) {
+  var range = _ramda2['default'].without([0], _ramda2['default'].range.apply(this, [].concat(obj.range[0], obj.range[1] + 1)));
+  return (0, _snabbdomH2['default'])('span.ff-rating', mapIndexed(function (r, i) {
+    return (0, _snabbdomH2['default'])('span.' + (r > 1 ? 'ff-rating--pos' : 'ff-rating--neg'), [(0, _snabbdomH2['default'])('input', { props: { type: 'radio', value: r, name: obj.name, id: obj.name + '-' + i },
+      style: { display: 'none' } }), (0, _snabbdomH2['default'])('label', { attrs: { 'for': obj.name + '-' + i } })]);
+  }, range));
 }
 
 function reasonsList(reasons) {
   return mapIndexed(function (reason, i) {
     return (0, _snabbdomH2['default'])('li', {
       attrs: { index: i, text: reason[0], rating: reason[1] },
-      style: { height: Math.abs(reason[1]) * 5 + 'px' }
+      style: { height: Math.abs(reason[1]) * 1 + 'em' }
     });
   }, reasons);
 }
@@ -19436,4 +19446,4 @@ function submit(ev, state) {
 
 (0, _flimflamRender2['default'])(init(), view, container);
 
-},{"flimflam-render":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flimflam-render/index.js","flyd":"/Users/yutakahoulette/flimflam_sandbox/node_modules/flyd/lib/index.js","form-serialize":"/Users/yutakahoulette/flimflam_sandbox/node_modules/form-serialize/index.js","ramda":"/Users/yutakahoulette/flimflam_sandbox/node_modules/ramda/dist/ramda.js","snabbdom/h":"/Users/yutakahoulette/flimflam_sandbox/node_modules/snabbdom/h.js"}]},{},["/Users/yutakahoulette/flimflam_sandbox/scripts/index.es6"]);
+},{"flimflam-render":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/index.js","flyd":"/Users/yutakahoulette/should_i/node_modules/flyd/lib/index.js","form-serialize":"/Users/yutakahoulette/should_i/node_modules/form-serialize/index.js","ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js","snabbdom/h":"/Users/yutakahoulette/should_i/node_modules/snabbdom/h.js"}]},{},["/Users/yutakahoulette/should_i/scripts/index.es6"]);
