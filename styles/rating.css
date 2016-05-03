@@ -1,28 +1,51 @@
-.ff-rating--pos:before,
-.ff-rating--neg:before {
+.ff-rating label {
   display: inline-block;
-    color: grey;
-    font-size: 14px;
-    padding: 3px;
-    cursor: pointer;
+  cursor: pointer;
+  transform: translateY(4px);
 }
 
-.ff-rating--pos:before {
-  content: '\25B2';
-  transform: translateY(-2px);
+.ff-rating label:after, 
+.ff-rating label:before {
+  text-align: center;
+  font-size: 14px;
+  padding: 1px 4px;
+  line-height: 1;
 }
 
-.ff-rating--neg:before {
+.ff-rating label:before {
+  content: attr(rating);
+  display: inline-block;
+  color: grey;
+  opacity: 0;
+}
+
+.ff-rating label:after {
+  display: block;
+  font-family: Comic Sans MS;
+}
+
+.ff-rating--pos label:after {
+  content: '\25B3';
+  color: rgb(72, 124, 53);
+}
+
+.ff-rating--neg label:after {
+  content: '\25BD';
+  color: red;
+}
+
+.ff-rating input:checked ~ label:before,
+.ff-rating label:hover:before {
+  opacity: 1; 
+}
+.ff-rating--neg input:checked ~ label:after,
+.ff-rating--neg label:hover:after {
   content: '\25BC';
-  transform: translateY(2px);
 }
-
-.ff-rating-input:hover .ff-rating--pos:hover,
-.ff-rating-input:hover .ff-rating--pos:hover ~ .ff-rating--pos,
-.ff-rating-input:checked ~ .ff-rating--pos:before {
-  color: green;
+.ff-rating--pos input:checked ~ label:after,
+.ff-rating--pos label:hover:after {
+  content: '\25B2';
 }
-
 
 
 /* .rating:hover .rating-star:hover, */

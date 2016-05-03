@@ -19405,16 +19405,14 @@ var container = document.getElementById('container');
 var mapIndexed = _ramda2['default'].addIndex(_ramda2['default'].map);
 
 function view(ctx) {
-  return (0, _snabbdomH2['default'])('div.container', [(0, _snabbdomH2['default'])('h1.title', ['Should I ', (0, _snabbdomH2['default'])('span', { props: { contentEditable: 'true' } }, 'asdf')]), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--pros', reasonsList(ctx.state.reasons.pros)), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('form.reasonsForm', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: { name: 'reason[0]', type: 'text', placeholder: 'Add pro or con' } })
-  // , h('input', {props: {name: 'reason[1]', type: 'range', step: '1', min: '-10', max: '10'}})
-  , ratingInput({ range: [-10, 10], name: 'reason[1]' }), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
+  return (0, _snabbdomH2['default'])('div.container', [(0, _snabbdomH2['default'])('h1.title', ['Should I ', (0, _snabbdomH2['default'])('span', { props: { contentEditable: 'true' } }, 'asdf')]), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--pros', reasonsList(ctx.state.reasons.pros)), (0, _snabbdomH2['default'])('form.reasonsForm', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: { name: 'reason[0]', type: 'text', placeholder: 'Add pro or con' } }), ratingInput(-7, 7, 'reason[1]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
 }
 
-function ratingInput(obj) {
-  var range = _ramda2['default'].without([0], _ramda2['default'].range.apply(this, [].concat(obj.range[0], obj.range[1] + 1)));
+function ratingInput(min, max, name) {
+  var range = _ramda2['default'].without([0], _ramda2['default'].range(min, max + 1));
   return (0, _snabbdomH2['default'])('span.ff-rating', mapIndexed(function (r, i) {
-    return (0, _snabbdomH2['default'])('span.' + (r > 1 ? 'ff-rating--pos' : 'ff-rating--neg'), [(0, _snabbdomH2['default'])('input', { props: { type: 'radio', value: r, name: obj.name, id: obj.name + '-' + i },
-      style: { display: 'none' } }), (0, _snabbdomH2['default'])('label', { attrs: { 'for': obj.name + '-' + i } })]);
+    return (0, _snabbdomH2['default'])('span.' + (r > 0 ? 'ff-rating--pos' : 'ff-rating--neg'), [(0, _snabbdomH2['default'])('input', { props: { type: 'radio', value: r, name: name, id: name + '-' + i },
+      style: { display: 'none' } }), (0, _snabbdomH2['default'])('label', { attrs: { 'for': name + '-' + i, rating: r } })]);
   }, range));
 }
 

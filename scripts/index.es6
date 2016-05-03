@@ -10,46 +10,39 @@ const mapIndexed = R.addIndex(R.map)
 function view(ctx) {
   return h('div.container', [
     h('h1.title', ['Should I ', h('span', {props: {contentEditable: 'true'}}, 'asdf')])
-  ,
-    h('ul.reasonsList.reasonsList--pros', 
-      reasonsList(ctx.state.reasons.pros)
-    )
-  , h('ul.reasonsList.reasonsList--cons', 
-      reasonsList(ctx.state.reasons.cons)
-    )
+  , h('ul.reasonsList.reasonsList--cons', reasonsList(ctx.state.reasons.cons))
+  , h('ul.reasonsList.reasonsList--pros', reasonsList(ctx.state.reasons.pros))
   , h('form.reasonsForm', {on: {submit: ctx.streams.submit}}
-  , [ h('input', {props: {name: 'reason[0]', type: 'text', placeholder: 'Add pro or con'}})
-      // , h('input', {props: {name: 'reason[1]', type: 'range', step: '1', min: '-10', max: '10'}})
-      , ratingInput({range: [-10, 10], name: 'reason[1]'})
-      , h('button', {props: {type: 'submit'}}, 'Submit')
+    , [ h('input', {props: {name: 'reason[0]', type: 'text', placeholder: 'Add pro or con'}})
+        , ratingInput(-7, 7, 'reason[1]')
+        , h('button', {props: {type: 'submit'}}, 'Submit')
       ]
     )
   ])
 }
 
-function ratingInput(obj) {
-  let range = R.without([0], R.range.apply(this, [].concat(obj.range[0], obj.range[1] + 1)))
-  return h('span.ff-rating', mapIndexed((r, i) =>  h(`span.${r > 1 ? 'ff-rating--pos' : 'ff-rating--neg'}`, [
-          h('input', {props: {type: 'radio', value: r, name: obj.name, id: `${obj.name}-${i}`}
+function ratingInput(min, max, name) {
+  let range = R.without([0], R.range(min, max + 1))
+  return h('span.ff-rating', mapIndexed((r, i) =>  h(`span.${r > 0 ? 'ff-rating--pos' : 'ff-rating--neg'}`, [
+          h('input', {props: {type: 'radio', value: r, name: name, id: `${name}-${i}`}
             , style: {display: 'none'}})
-        , h('label' , {attrs: {for: `${obj.name}-${i}`}})
+        , h('label' , {attrs: {for: `${name}-${i}`, rating: r}})
       ]), range)
   )
 }
 
 function reasonsList(reasons) {
   return mapIndexed((reason, i) => h('li', {
-    attrs: {index: i, text: reason[0], rating: reason[1]}
-  , style: { height: `${Math.abs(reason[1]) * 1}em`}
-  })
-  , reasons)
+      attrs: {index: i, text: reason[0], rating: reason[1]}
+    , style: { height: `${Math.abs(reason[1]) * 1}em`}
+  }), reasons)
 }
 
 function init(){
   return {
-    streams: {submit: flyd.stream()}
-  , updates: {submit: submit} 
-  , state:   {reasons: {pros:[], cons:[]}}
+      streams: {submit: flyd.stream()}
+    , updates: {submit: submit} 
+    , state:   {reasons: {pros:[], cons:[]}}
   }
 }
 
