@@ -1,6 +1,6 @@
 @import 'normalize.css';
 @import 'fonts.css';
-@import 'graph.css';
+@import 'reasons.css';
 @import 'rating.css';
 
 * {
@@ -16,7 +16,7 @@ body {
   border: 2px solid grey;
 }
 
-.container {
+main {
   max-width: 900px;
   margin: 0 auto;
   height: 100%;
@@ -51,21 +51,18 @@ input:focus {
   border-bottom-color: #6E6E6E;
 }
 
-
 h1 input {
   min-width: 6rem;
 }
-
 
 h1 div:after {
   content: '?';
 }
 
-.reasonsForm {
-  position: absolute;
-  bottom: 20px;
+form {
+  display: -webkit-flex;
+  display:         flex;
   width: 100%;
   text-align: center;
-  left: 0;
 }
 

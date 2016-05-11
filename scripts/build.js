@@ -19436,26 +19436,29 @@ var randEl = function randEl(arr) {
 
 var placeholder = randEl(_placeholders2['default']);
 
-function view(ctx) {
-  console.log(ctx.state.title);
-  return (0, _snabbdomH2['default'])('div.container', [header(ctx), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('ul.reasonsList.reasonsList--pros', reasonsList(ctx.state.reasons.pros)), (0, _snabbdomH2['default'])('form.reasonsForm', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: { autocomplete: 'off', name: 'reason[0]', type: 'text', placeholder: 'Add pro or con' } }), (0, _rating2['default'])(-7, 7, 'reason[1]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
-}
+var view = function view(ctx) {
+  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros))]), (0, _snabbdomH2['default'])('form.reasonsForm', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: {
+      autocomplete: 'off',
+      name: 'reason[0]',
+      type: 'text',
+      placeholder: 'Add pro or con' } }), (0, _rating2['default'])(-5, 5, 'reason[1]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
+};
 
-function header(ctx) {
+var header = function header(ctx) {
   return (0, _snabbdomH2['default'])('header', [(0, _snabbdomH2['default'])('h1.title', ['Should I ', (0, _snabbdomH2['default'])('div', [(0, _snabbdomH2['default'])('input', { props: { placeholder: placeholder, autocomplete: 'off' },
     style: { width: ctx.state.title ? (0, _elementWidth2['default'])(ctx.state.title, 'h1') + 30 + 'px' : (0, _elementWidth2['default'])(placeholder, 'h1') + 30 + 'px' },
     on: { keyup: ctx.streams.saveTitle }
   })])])]);
-}
+};
 
-function reasonsList(reasons) {
+var reasonsList = function reasonsList(reasons) {
   return mapIndexed(function (reason, i) {
     return (0, _snabbdomH2['default'])('li', {
       attrs: { index: i, text: reason[0], rating: reason[1] },
       style: { height: Math.abs(reason[1]) * 1 + 'em' }
     });
   }, reasons);
-}
+};
 
 function init() {
   return {
@@ -19474,9 +19477,9 @@ function init() {
   };
 }
 
-function saveTitle(ev, state) {
+var saveTitle = function saveTitle(ev, state) {
   return _ramda2['default'].assoc('title', ev.target.value, state);
-}
+};
 
 function submit(ev, state) {
   ev.preventDefault();
@@ -19485,10 +19488,6 @@ function submit(ev, state) {
   var proOrCon = reason[1] > 0 ? 'pros' : 'cons';
   form.reset();
   return _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].prepend(reason, state.reasons[proOrCon]), state);
-}
-
-function hidePlaceholder(ev, state) {
-  return _ramda2['default'].assoc('isHidingPlaceholder', true, state);
 }
 
 (0, _flimflamRender2['default'])(init(), view, container);
