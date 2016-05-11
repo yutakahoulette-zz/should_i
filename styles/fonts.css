@@ -32,11 +32,11 @@
   font-style: normal;
 }
 
-body { 
+
+
+html { 
+  font-size: 17px;
   font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
 }
 
-.sans { 
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
-}
 

@@ -3,33 +3,50 @@ import render from 'flimflam-render'
 import R from 'ramda'
 import flyd from 'flyd'
 import serialize from 'form-serialize'
+import getWidth from './element-width'
+import rating from './rating'
+import placeholders from './placeholders'
 
 const container = document.getElementById('container')
 const mapIndexed = R.addIndex(R.map)
 
+const randEl = (arr) => arr[Math.floor(Math.random() * arr.length)] 
+  
+let placeholder = randEl(placeholders)
+
 function view(ctx) {
+  console.log(ctx.state.title)
   return h('div.container', [
-    h('h1.title', ['Should I ', h('span', {props: {contentEditable: 'true'}}, 'asdf')])
+    header(ctx)
   , h('ul.reasonsList.reasonsList--cons', reasonsList(ctx.state.reasons.cons))
   , h('ul.reasonsList.reasonsList--pros', reasonsList(ctx.state.reasons.pros))
   , h('form.reasonsForm', {on: {submit: ctx.streams.submit}}
-    , [ h('input', {props: {name: 'reason[0]', type: 'text', placeholder: 'Add pro or con'}})
-        , ratingInput(-7, 7, 'reason[1]')
-        , h('button', {props: {type: 'submit'}}, 'Submit')
+    , [ h('input', {props: {autocomplete: 'off', name: 'reason[0]', type: 'text', placeholder: 'Add pro or con'}})
+      , rating(-7, 7, 'reason[1]')
+      , h('button', {props: {type: 'submit'}}, 'Submit')
       ]
     )
   ])
 }
 
-function ratingInput(min, max, name) {
-  let range = R.without([0], R.range(min, max + 1))
-  return h('span.ff-rating', mapIndexed((r, i) =>  h(`span.${r > 0 ? 'ff-rating--pos' : 'ff-rating--neg'}`, [
-          h('input', {props: {type: 'radio', value: r, name: name, id: `${name}-${i}`}
-            , style: {display: 'none'}})
-        , h('label' , {attrs: {for: `${name}-${i}`, rating: r}})
-      ]), range)
-  )
+
+function header(ctx) {
+   return h('header', [ 
+       h('h1.title', ['Should I '
+      , h('div', [
+         h('input'
+          , {props: { placeholder: placeholder, autocomplete: 'off' }
+            , style: { width: ctx.state.title 
+              ? (getWidth(ctx.state.title, 'h1') + 30 + 'px')
+              : (getWidth(placeholder, 'h1') + 30 + 'px')}
+            , on: { keyup: ctx.streams.saveTitle }
+            }
+          )
+        ])
+      ])
+    ])
 }
+
 
 function reasonsList(reasons) {
   return mapIndexed((reason, i) => h('li', {
@@ -40,10 +57,23 @@ function reasonsList(reasons) {
 
 function init(){
   return {
-      streams: {submit: flyd.stream()}
-    , updates: {submit: submit} 
-    , state:   {reasons: {pros:[], cons:[]}}
+    streams: {
+      submit: flyd.stream()
+    , saveTitle: flyd.stream()
+    }
+  , updates: {
+      submit: submit
+    , saveTitle: saveTitle
+    } 
+  , state: {
+      reasons: {pros:[], cons:[]}
+    , title: ''
+    }
   }
+}
+
+function saveTitle(ev, state) {
+  return R.assoc('title' , ev.target.value , state)
 }
 
 function submit(ev, state) {
@@ -53,6 +83,10 @@ function submit(ev, state) {
   let proOrCon = reason[1] > 0 ? 'pros' : 'cons'
   form.reset()
   return R.assocPath(['reasons', proOrCon], R.prepend(reason, state.reasons[proOrCon]), state) 
+}
+
+function hidePlaceholder(ev, state) {
+  return R.assoc('isHidingPlaceholder', true, state)
 }
 
 render(init(), view, container)

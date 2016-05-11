@@ -1,66 +1,50 @@
-.ff-rating label {
+
+.rating label {
   display: inline-block;
   cursor: pointer;
   transform: translateY(4px);
 }
 
-.ff-rating label:after, 
-.ff-rating label:before {
+.rating label:after, 
+.rating label:before {
   text-align: center;
   font-size: 14px;
   padding: 1px 4px;
   line-height: 1;
 }
 
-.ff-rating label:before {
+.rating label:before {
   content: attr(rating);
   display: inline-block;
-  color: grey;
-  opacity: 0;
+  opacity: 0.3;
 }
 
-.ff-rating label:after {
+.rating label:after {
   display: block;
   font-family: Comic Sans MS;
 }
 
-.ff-rating--pos label:after {
+.rating input.pos + label:after {
   content: '\25B3';
   color: rgb(72, 124, 53);
 }
 
-.ff-rating--neg label:after {
+.rating input.neg + label:after {
   content: '\25BD';
   color: red;
 }
+.rating input:checked + label:before,
+.rating input + label:hover:before {
+  opacity: 1;
+}
 
-.ff-rating input:checked ~ label:before,
-.ff-rating label:hover:before {
-  opacity: 1; 
-}
-.ff-rating--neg input:checked ~ label:after,
-.ff-rating--neg label:hover:after {
-  content: '\25BC';
-}
-.ff-rating--pos input:checked ~ label:after,
-.ff-rating--pos label:hover:after {
+.rating input.pos:checked + label:after,
+.rating input.pos + label:hover:after {
   content: '\25B2';
 }
 
-
-/* .rating:hover .rating-star:hover, */
-/* .rating:hover .rating-star:hover ~ .rating-star, */
-/* .rating-input:checked ~ .rating-star { */
-/*     background-position: 0 0; */
-/* } */
-
-/* .rating-star, */
-/* .rating:hover .rating-star { */
-/*     position: relative; */
-/*     float: right; */
-/*     display: block; */
-/*     width: 16px; */
-/*     height: 16px; */
-/*     background: url('http://kubyshkin.ru/samples/star-rating/star.png') 0 -16px; */
-/* } */
+.rating input.neg:checked + label:after,
+.rating input.neg + label:hover:after {
+  content: '\25BC';
+}
 
