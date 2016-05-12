@@ -26,12 +26,12 @@
 
 .rating input.pos + label:after {
   content: '\25B3';
-  color: rgb(72, 124, 53);
+  color: grey;
 }
 
 .rating input.neg + label:after {
   content: '\25BD';
-  color: red;
+  color: grey;
 }
 .rating input:checked + label:before,
 .rating input + label:hover:before {

@@ -17,22 +17,26 @@
 }
 
 .reasons li {
-  margin-top: 1px;
+  border-top: 1px solid white;
   overflow: visible;
 }
 
 .reasons li:after {
   content: attr(text);
-  font-size: 15px;
-  opacity: 0.2;
+  font-size: 13px;
+  padding-left: 5px;
+  color: white;
+  opacity: 0.5;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  letter-spacing: 0.6px;
+  font-weight: 200;
 }
 
-
 ul.pros li {
-  background: green;
+  background: rgba(0,0,0,0.55);
 }
 
 ul.cons li {
-  background: red;
+  background: rgba(170, 16, 6, 0.8);
 }
 

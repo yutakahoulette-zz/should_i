@@ -21,7 +21,7 @@ const view = (ctx) =>
       h('ul.cons', reasonsList(ctx.state.reasons.cons))
     , h('ul.pros', reasonsList(ctx.state.reasons.pros))
     ])
-  , h('form.reasonsForm', {on: {submit: ctx.streams.submit}}
+  , h('form', {on: {submit: ctx.streams.submit}}
     , [ h('input', {props: {
                       autocomplete: 'off'
                     , name: 'reason[0]'

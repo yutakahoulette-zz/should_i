@@ -8,12 +8,14 @@
   box-sizing: border-box;
 }
 html {
-  border: 5px solid grey;
+  border: 5px solid rgba(0,0,0,0.5);
   padding: 5px;
+  background: #FFF7ED;
 }
 
 body {
-  border: 2px solid grey;
+  border: 2px solid rgba(0,0,0,0.5);
+  color: rgba(0,0,0,0.8);
 }
 
 main {
@@ -42,16 +44,35 @@ h1 {
 
 input {
   white-space: pre;
+  background: transparent;
   max-width: 100%;
   border-top: none;
   border-right: none;
   border-left: none;
-  border-bottom: 2px solid #D6D6D6;
+  border-bottom: 2px solid rgba(0,0,0,0.2);
 }
+
+::-webkit-input-placeholder {
+   color: rgba(0,0,0,0.3);
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: rgba(0,0,0,0.3);
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: rgba(0,0,0,0.3);
+}
+
+:-ms-input-placeholder {  
+   color: rgba(0,0,0,0.3);
+}
+
+
 
 input:focus {
   outline: transparent;
-  border-bottom-color: #6E6E6E;
+  border-bottom-color: rgba(0,0,0,0.5);
 }
 
 h1 input {

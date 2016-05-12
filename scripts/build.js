@@ -19437,7 +19437,7 @@ var randEl = function randEl(arr) {
 var placeholder = randEl(_placeholders2['default']);
 
 var view = function view(ctx) {
-  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros))]), (0, _snabbdomH2['default'])('form.reasonsForm', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: {
+  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros))]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: {
       autocomplete: 'off',
       name: 'reason[0]',
       type: 'text',
