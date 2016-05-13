@@ -19437,11 +19437,15 @@ var randEl = function randEl(arr) {
 var placeholder = randEl(_placeholders2['default']);
 
 var view = function view(ctx) {
-  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros))]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: {
+  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros)), (0, _snabbdomH2['default'])('aside', scale(ctx.state.max))]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: {
       autocomplete: 'off',
       name: 'reason[0]',
       type: 'text',
       placeholder: 'Add pro or con' } }), (0, _rating2['default'])(-5, 5, 'reason[1]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
+};
+
+var scale = function scale(max) {
+  return max;
 };
 
 var header = function header(ctx) {
@@ -19472,7 +19476,8 @@ function init() {
     },
     state: {
       reasons: { pros: [], cons: [] },
-      title: ''
+      title: '',
+      max: 0
     }
   };
 }
@@ -19487,8 +19492,22 @@ function submit(ev, state) {
   var reason = (0, _formSerialize2['default'])(form, { hash: true }).reason;
   var proOrCon = reason[1] > 0 ? 'pros' : 'cons';
   form.reset();
-  return _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].prepend(reason, state.reasons[proOrCon]), state);
+  var newState = _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].prepend(reason, state.reasons[proOrCon]), state);
+  var max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons));
+  return _ramda2['default'].assoc('max', max, newState);
 }
+
+var totalIn = function totalIn(i, arr) {
+  return _ramda2['default'].reduce(posAdd, 0, _ramda2['default'].pluck(i, arr));
+};
+
+var posAdd = function posAdd(a, b) {
+  return _ramda2['default'].add(Math.abs(a), Math.abs(b));
+};
+
+var larger = function larger(a, b) {
+  return a >= b ? a : b;
+};
 
 (0, _flimflamRender2['default'])(init(), view, container);
 

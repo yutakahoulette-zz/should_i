@@ -20,6 +20,7 @@ const view = (ctx) =>
   , h('div.reasons', [
       h('ul.cons', reasonsList(ctx.state.reasons.cons))
     , h('ul.pros', reasonsList(ctx.state.reasons.pros))
+    , h('aside', scale(ctx.state.max))
     ])
   , h('form', {on: {submit: ctx.streams.submit}}
     , [ h('input', {props: {
@@ -32,6 +33,8 @@ const view = (ctx) =>
       ]
     )
   ])
+
+const scale = (max) => max
 
 const header = (ctx) =>
   h('header', [ 
@@ -68,6 +71,7 @@ function init(){
   , state: {
       reasons: {pros:[], cons:[]}
     , title: ''
+    , max: 0
     }
   }
 }
@@ -80,8 +84,16 @@ function submit(ev, state) {
   let reason = serialize(form, {hash: true}).reason
   let proOrCon = reason[1] > 0 ? 'pros' : 'cons'
   form.reset()
-  return R.assocPath(['reasons', proOrCon], R.prepend(reason, state.reasons[proOrCon]), state) 
+  let newState = R.assocPath(['reasons', proOrCon], R.prepend(reason, state.reasons[proOrCon]), state) 
+  let max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons)) 
+  return R.assoc('max', max, newState) 
 }
+
+const totalIn = (i, arr) => R.reduce(posAdd, 0, R.pluck(i, arr))
+
+const posAdd = (a, b) => R.add(Math.abs(a), Math.abs(b))
+
+const larger = (a, b) => a >= b ? a : b 
 
 render(init(), view, container)
 
