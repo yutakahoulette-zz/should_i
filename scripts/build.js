@@ -19437,7 +19437,7 @@ var randEl = function randEl(arr) {
 var placeholder = randEl(_placeholders2['default']);
 
 var view = function view(ctx) {
-  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('section', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons, ctx.state.max)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros, ctx.state.max))])]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: {
+  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('section', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons, ctx.state.max)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros, ctx.state.max))])]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('small', ctx.state.error), (0, _snabbdomH2['default'])('input', { props: {
       autocomplete: 'off',
       name: 'reason[0]',
       type: 'text',
@@ -19481,7 +19481,8 @@ function init() {
     state: {
       reasons: { pros: [], cons: [] },
       title: '',
-      max: 0
+      max: 5,
+      error: ''
     }
   };
 }
@@ -19494,11 +19495,21 @@ function submit(ev, state) {
   ev.preventDefault();
   var form = ev.target;
   var reason = (0, _formSerialize2['default'])(form, { hash: true }).reason;
+  var plz = 'Please enter a ';
+  if (!reason) {
+    return _ramda2['default'].assoc('error', plz + ' pro or con and a rating', state);
+  }
+  if (!reason[0]) {
+    return _ramda2['default'].assoc('error', plz + ' pro or con', state);
+  }
+  if (!reason[1]) {
+    return _ramda2['default'].assoc('error', plz + ' a rating', state);
+  }
   var proOrCon = reason[1] > 0 ? 'pros' : 'cons';
   form.reset();
-  var newState = _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].prepend(reason, state.reasons[proOrCon]), state);
+  var newState = _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].append(reason, state.reasons[proOrCon]), state);
   var max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons));
-  return _ramda2['default'].assoc('max', max, newState);
+  return _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState));
 }
 
 var totalIn = function totalIn(i, arr) {

@@ -25,7 +25,8 @@ const view = (ctx) =>
       ])
     ])
   , h('form', {on: {submit: ctx.streams.submit}}
-    , [ h('input', {props: {
+    , [ h('small', ctx.state.error)
+      , h('input', {props: {
                       autocomplete: 'off'
                     , name: 'reason[0]'
                     , type: 'text'
@@ -81,7 +82,8 @@ function init(){
   , state: {
       reasons: {pros:[], cons:[]}
     , title: ''
-    , max: 0
+    , max: 5
+    , error: ''
     }
   }
 }
@@ -92,11 +94,21 @@ function submit(ev, state) {
   ev.preventDefault()
   let form = ev.target
   let reason = serialize(form, {hash: true}).reason
+  let plz = 'Please enter a '
+  if(!reason) {
+    return R.assoc('error', `${plz} pro or con and a rating`, state)
+  }
+  if(!reason[0]) {
+    return R.assoc('error', `${plz} pro or con`, state)
+  }
+  if(!reason[1]) {
+    return R.assoc('error', `${plz} a rating`, state)
+  }
   let proOrCon = reason[1] > 0 ? 'pros' : 'cons'
   form.reset()
-  let newState = R.assocPath(['reasons', proOrCon], R.prepend(reason, state.reasons[proOrCon]), state) 
+  let newState = R.assocPath(['reasons', proOrCon], R.append(reason, state.reasons[proOrCon]), state) 
   let max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons)) 
-  return R.assoc('max', max, newState) 
+  return R.assoc('error', '', R.assoc('max', max, newState))
 }
 
 const totalIn = (i, arr) => R.reduce(posAdd, 0, R.pluck(i, arr))
