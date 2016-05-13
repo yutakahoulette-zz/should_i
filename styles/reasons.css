@@ -4,16 +4,35 @@
   width: 100%;
   display: -webkit-flex;
   display: flex;
-  -webkit-align-items: flex-end;
-  align-items: flex-end;
   height: 100%;
 }
+
+.reasons section {
+  width: 100%;
+  position: relative;
+}
+
 
 .reasons ul {
   list-style-type: none;
   width: 50%;
-  padding: 0 0 30px 0;
   margin: 0;
+  padding: 7px 0;
+  position: absolute;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column-reverse; /* Safari */
+  flex-direction:         column-reverse;
+  bottom: 0;
+  height: 100%;
+}
+
+.reasons ul.cons {
+  left: 0;
+}
+
+.reasons ul.pros {
+  right: 0;
 }
 
 .reasons li {
@@ -23,13 +42,12 @@
 
 .reasons li:after {
   content: attr(text);
-  font-size: 13px;
+  font-size: 14px;
   padding-left: 5px;
-  color: white;
-  opacity: 0.5;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
-  letter-spacing: 0.6px;
   font-weight: 200;
+  color: white;
+  opacity: 0.7;
+  letter-spacing: 0.6px;
 }
 
 ul.pros li {
@@ -40,3 +58,18 @@ ul.cons li {
   background: rgba(170, 16, 6, 0.8);
 }
 
+aside {
+  font-size: 15px;
+  text-align: right;
+  padding-right: 20px;
+  width: 60px;
+  opacity: 0.8;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column; /* Safari */
+  flex-direction:         column;
+  -webkit-align-self: stretch;
+  align-self: stretch;
+  -webkit-justify-content: space-between; /* Safari */
+  justify-content:         space-between;
+}

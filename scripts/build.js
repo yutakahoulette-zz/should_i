@@ -19437,15 +19437,19 @@ var randEl = function randEl(arr) {
 var placeholder = randEl(_placeholders2['default']);
 
 var view = function view(ctx) {
-  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros)), (0, _snabbdomH2['default'])('aside', scale(ctx.state.max))]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: {
+  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('section', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons, ctx.state.max)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros, ctx.state.max))])]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('input', { props: {
       autocomplete: 'off',
       name: 'reason[0]',
       type: 'text',
       placeholder: 'Add pro or con' } }), (0, _rating2['default'])(-5, 5, 'reason[1]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Submit')])]);
 };
 
+var round = function round(a) {
+  return Math.round(a * 10) / 10;
+};
+
 var scale = function scale(max) {
-  return max;
+  return [(0, _snabbdomH2['default'])('span', max + ' -'), (0, _snabbdomH2['default'])('span', round(max * 0.75) + ' -'), (0, _snabbdomH2['default'])('span', round(max * 0.5) + ' -'), (0, _snabbdomH2['default'])('span', round(max * 0.25) + ' -'), (0, _snabbdomH2['default'])('span', 0 + ' -')];
 };
 
 var header = function header(ctx) {
@@ -19455,11 +19459,11 @@ var header = function header(ctx) {
   })])])]);
 };
 
-var reasonsList = function reasonsList(reasons) {
+var reasonsList = function reasonsList(reasons, max) {
   return mapIndexed(function (reason, i) {
     return (0, _snabbdomH2['default'])('li', {
       attrs: { index: i, text: reason[0], rating: reason[1] },
-      style: { height: Math.abs(reason[1]) * 1 + 'em' }
+      style: { height: Math.abs(reason[1]) / max * 100 + '%' }
     });
   }, reasons);
 };

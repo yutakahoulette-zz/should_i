@@ -18,9 +18,11 @@ const view = (ctx) =>
   h('main', [
     header(ctx)
   , h('div.reasons', [
-      h('ul.cons', reasonsList(ctx.state.reasons.cons))
-    , h('ul.pros', reasonsList(ctx.state.reasons.pros))
-    , h('aside', scale(ctx.state.max))
+      h('aside', scale(ctx.state.max))
+    , h('section', [
+        h('ul.cons', reasonsList(ctx.state.reasons.cons, ctx.state.max))
+      , h('ul.pros', reasonsList(ctx.state.reasons.pros, ctx.state.max))
+      ])
     ])
   , h('form', {on: {submit: ctx.streams.submit}}
     , [ h('input', {props: {
@@ -34,7 +36,15 @@ const view = (ctx) =>
     )
   ])
 
-const scale = (max) => max
+const round = (a) => Math.round(a * 10) / 10
+
+const scale = (max) =>
+  [ h('span', max + ' -')
+  , h('span', round(max * 0.75) + ' -')
+  , h('span', round(max * 0.5) + ' -')
+  , h('span', round(max * 0.25) + ' -')
+  , h('span', 0 + ' -')
+  ]
 
 const header = (ctx) =>
   h('header', [ 
@@ -52,10 +62,10 @@ const header = (ctx) =>
   ])
 
 
-const reasonsList = (reasons) => 
+const reasonsList = (reasons, max) => 
   mapIndexed((reason, i) => h('li', {
     attrs: {index: i, text: reason[0], rating: reason[1]}
-  , style: { height: `${Math.abs(reason[1]) * 1}em`}
+  , style: { height: `${(Math.abs(reason[1]) / max) * 100}%`}
   }), reasons)
 
 function init(){
