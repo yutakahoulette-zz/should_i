@@ -25,14 +25,14 @@ const view = (ctx) =>
       ])
     ])
   , h('form', {on: {submit: ctx.streams.submit}}
-    , [ h('small', ctx.state.error)
+    , [ h('p.error', ctx.state.error)
       , h('input', {props: {
                       autocomplete: 'off'
                     , name: 'reason[0]'
                     , type: 'text'
                     , placeholder: 'Add pro or con'}})
       , rating(-5, 5, 'reason[1]')
-      , h('button', {props: {type: 'submit'}}, 'Submit')
+      , h('button', {props: {type: 'submit'}}, 'Save')
       ]
     )
   ])
@@ -52,7 +52,7 @@ const header = (ctx) =>
      h('h1.title', ['Should I '
     , h('div', [
        h('input'
-        , {props: { placeholder: placeholder, autocomplete: 'off' }
+        , {props: { autofocus: true, placeholder: placeholder, autocomplete: 'off' }
           , style: { width: ctx.state.title 
             ? (getWidth(ctx.state.title, 'h1') + 30 + 'px')
             : (getWidth(placeholder, 'h1') + 30 + 'px')}
@@ -102,12 +102,12 @@ function submit(ev, state) {
     return R.assoc('error', `${plz} pro or con`, state)
   }
   if(!reason[1]) {
-    return R.assoc('error', `${plz} a rating`, state)
+    return R.assoc('error', `${plz} rating`, state)
   }
   let proOrCon = reason[1] > 0 ? 'pros' : 'cons'
-  form.reset()
   let newState = R.assocPath(['reasons', proOrCon], R.append(reason, state.reasons[proOrCon]), state) 
   let max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons)) 
+  form.reset()
   return R.assoc('error', '', R.assoc('max', max, newState))
 }
 

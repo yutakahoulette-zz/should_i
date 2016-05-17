@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "watchify -t babelify scripts/index.es6 -o scripts/build.js -v" 
+    "watch": "watchify -t babelify scripts/index.js -o scripts/build.js -v" 
   },
   "author": "",
   "license": "ISC",
