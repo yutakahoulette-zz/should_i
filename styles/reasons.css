@@ -37,15 +37,30 @@
 .reasons li {
   border-top: 1px solid white;
   height: 0;
- -webkit-transition: height ease-out 0.4s; 
-  -moz-transition: height ease-out 0.4s;
-  -o-transition: height ease-out 0.4s;
-  transition: height ease-out 0.4s;
+  opacity: 1;
+  position: relative;
+ -webkit-transition: height ease-out 0.3s, opacity ease-out 0.1s; 
+  -moz-transition: height ease-out 0.3s, opacity ease-out 0.1s; 
+  -o-transition: height ease-out 0.3s, opacity ease-out 0.1s; 
+  transition: height ease-out 0.3s, opacity ease-out 0.1s; 
   -webkit-transform: translatez(0);
   -moz-transform: translatez(0);
   -ms-transform: translatez(0);
   -o-transform: translatez(0);
   transform: translatez(0);
+}
+
+.close {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.reasons li:hover .close {
+  display: initial;
 }
 
 .reasons li:after {

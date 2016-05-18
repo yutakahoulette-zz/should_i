@@ -19463,9 +19463,8 @@ var reasonsList = function reasonsList(ctx, proOrCon) {
   return mapIndexed(function (reason, i) {
     return (0, _snabbdomH2['default'])('li', {
       attrs: { index: i, text: reason[0], rating: reason[1] },
-      style: { delayed: { height: Math.abs(reason[1]) / ctx.state.max * 100 + '%' } },
-      on: { click: ctx.streams.remove }
-    });
+      style: { delayed: { height: Math.abs(reason[1]) / ctx.state.max * 100 + '%' },
+        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.remove } }, '×')]);
   }, ctx.state.reasons[proOrCon]);
 };
 
@@ -19516,7 +19515,7 @@ function submit(ev, state) {
 }
 
 function remove(ev, state) {
-  var el = ev.target;
+  var el = ev.target.parentElement;
   var proOrCon = el.getAttribute('rating') > 0 ? 'pros' : 'cons';
   var i = el.getAttribute('index');
   return _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].remove(Number(i), 1, state.reasons[proOrCon]), state);

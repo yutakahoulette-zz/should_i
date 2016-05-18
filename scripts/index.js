@@ -65,10 +65,11 @@ const header = (ctx) =>
 
 const reasonsList = (ctx, proOrCon) => 
   mapIndexed((reason, i) => h('li', {
-    attrs: {index: i, text: reason[0], rating: reason[1]}
-  , style: {delayed:  {height: `${(Math.abs(reason[1]) / ctx.state.max) * 100}%`}}
-  , on: {click: ctx.streams.remove}
-  }), ctx.state.reasons[proOrCon])
+      attrs: {index: i, text: reason[0], rating: reason[1]}
+    , style: {delayed:  {height: `${(Math.abs(reason[1]) / ctx.state.max) * 100}%`},
+              remove: {opacity: '0'}}}
+    , [h('span.close', {on: {click: ctx.streams.remove}}, '×')])
+  , ctx.state.reasons[proOrCon])
 
 function init(){
   return {
@@ -115,7 +116,7 @@ function submit(ev, state) {
 }
 
 function remove(ev, state) {
-  let el = ev.target
+  let el = ev.target.parentElement
   let proOrCon = el.getAttribute('rating') > 0 ? 'pros' : 'cons' 
   let i = el.getAttribute('index')
   return R.assocPath(['reasons', proOrCon], R.remove(Number(i), 1, state.reasons[proOrCon]), state)
