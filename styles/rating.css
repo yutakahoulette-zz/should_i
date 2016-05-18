@@ -19,7 +19,7 @@
 .rating label:before {
   content: attr(rating);
   display: inline-block;
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 .rating label:after {

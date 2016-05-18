@@ -20,8 +20,8 @@ const view = (ctx) =>
   , h('div.reasons', [
       h('aside', scale(ctx.state.max))
     , h('section', [
-        h('ul.cons', reasonsList(ctx.state.reasons.cons, ctx.state.max))
-      , h('ul.pros', reasonsList(ctx.state.reasons.pros, ctx.state.max))
+        h('ul.cons', reasonsList(ctx, 'cons'))
+      , h('ul.pros', reasonsList(ctx, 'pros'))
       ])
     ])
   , h('form', {on: {submit: ctx.streams.submit}}
@@ -56,28 +56,31 @@ const header = (ctx) =>
           , style: { width: ctx.state.title 
             ? (getWidth(ctx.state.title, 'h1') + 30 + 'px')
             : (getWidth(placeholder, 'h1') + 30 + 'px')}
-          , on: { keyup: ctx.streams.saveTitle }
+          , on: {keyup: ctx.streams.saveTitle}
           })
       ])
     ])
   ])
 
 
-const reasonsList = (reasons, max) => 
+const reasonsList = (ctx, proOrCon) => 
   mapIndexed((reason, i) => h('li', {
     attrs: {index: i, text: reason[0], rating: reason[1]}
-  , style: { height: `${(Math.abs(reason[1]) / max) * 100}%`}
-  }), reasons)
+  , style: {delayed:  {height: `${(Math.abs(reason[1]) / ctx.state.max) * 100}%`}}
+  , on: {click: ctx.streams.remove}
+  }), ctx.state.reasons[proOrCon])
 
 function init(){
   return {
     streams: {
       submit: flyd.stream()
     , saveTitle: flyd.stream()
+    , remove: flyd.stream()
     }
   , updates: {
       submit: submit
     , saveTitle: saveTitle
+    , remove: remove 
     } 
   , state: {
       reasons: {pros:[], cons:[]}
@@ -111,6 +114,14 @@ function submit(ev, state) {
   return R.assoc('error', '', R.assoc('max', max, newState))
 }
 
+function remove(ev, state) {
+  let el = ev.target
+  let proOrCon = el.getAttribute('rating') > 0 ? 'pros' : 'cons' 
+  let i = el.getAttribute('index')
+  return R.assocPath(['reasons', proOrCon], R.remove(Number(i), 1, state.reasons[proOrCon]), state)
+}
+
+
 const totalIn = (i, arr) => R.reduce(posAdd, 0, R.pluck(i, arr))
 
 const posAdd = (a, b) => R.add(Math.abs(a), Math.abs(b))
@@ -119,3 +130,5 @@ const larger = (a, b) => a >= b ? a : b
 
 render(init(), view, container)
 
+
+window.R = R

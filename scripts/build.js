@@ -19437,7 +19437,7 @@ var randEl = function randEl(arr) {
 var placeholder = randEl(_placeholders2['default']);
 
 var view = function view(ctx) {
-  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('section', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx.state.reasons.cons, ctx.state.max)), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx.state.reasons.pros, ctx.state.max))])]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('p.error', ctx.state.error), (0, _snabbdomH2['default'])('input', { props: {
+  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('section', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))])]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('p.error', ctx.state.error), (0, _snabbdomH2['default'])('input', { props: {
       autocomplete: 'off',
       name: 'reason[0]',
       type: 'text',
@@ -19459,24 +19459,27 @@ var header = function header(ctx) {
   })])])]);
 };
 
-var reasonsList = function reasonsList(reasons, max) {
+var reasonsList = function reasonsList(ctx, proOrCon) {
   return mapIndexed(function (reason, i) {
     return (0, _snabbdomH2['default'])('li', {
       attrs: { index: i, text: reason[0], rating: reason[1] },
-      style: { height: Math.abs(reason[1]) / max * 100 + '%' }
+      style: { delayed: { height: Math.abs(reason[1]) / ctx.state.max * 100 + '%' } },
+      on: { click: ctx.streams.remove }
     });
-  }, reasons);
+  }, ctx.state.reasons[proOrCon]);
 };
 
 function init() {
   return {
     streams: {
       submit: _flyd2['default'].stream(),
-      saveTitle: _flyd2['default'].stream()
+      saveTitle: _flyd2['default'].stream(),
+      remove: _flyd2['default'].stream()
     },
     updates: {
       submit: submit,
-      saveTitle: saveTitle
+      saveTitle: saveTitle,
+      remove: remove
     },
     state: {
       reasons: { pros: [], cons: [] },
@@ -19512,6 +19515,13 @@ function submit(ev, state) {
   return _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState));
 }
 
+function remove(ev, state) {
+  var el = ev.target;
+  var proOrCon = el.getAttribute('rating') > 0 ? 'pros' : 'cons';
+  var i = el.getAttribute('index');
+  return _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].remove(Number(i), 1, state.reasons[proOrCon]), state);
+}
+
 var totalIn = function totalIn(i, arr) {
   return _ramda2['default'].reduce(posAdd, 0, _ramda2['default'].pluck(i, arr));
 };
@@ -19525,6 +19535,8 @@ var larger = function larger(a, b) {
 };
 
 (0, _flimflamRender2['default'])(init(), view, container);
+
+window.R = _ramda2['default'];
 
 },{"./element-width":"/Users/yutakahoulette/should_i/scripts/element-width.js","./placeholders":"/Users/yutakahoulette/should_i/scripts/placeholders.js","./rating":"/Users/yutakahoulette/should_i/scripts/rating.js","flimflam-render":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/index.js","flyd":"/Users/yutakahoulette/should_i/node_modules/flyd/lib/index.js","form-serialize":"/Users/yutakahoulette/should_i/node_modules/form-serialize/index.js","ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js","snabbdom/h":"/Users/yutakahoulette/should_i/node_modules/snabbdom/h.js"}],"/Users/yutakahoulette/should_i/scripts/placeholders.js":[function(require,module,exports){
 'use strict';

@@ -36,7 +36,16 @@
 
 .reasons li {
   border-top: 1px solid white;
-  overflow: visible;
+  height: 0;
+ -webkit-transition: height ease-out 0.4s; 
+  -moz-transition: height ease-out 0.4s;
+  -o-transition: height ease-out 0.4s;
+  transition: height ease-out 0.4s;
+  -webkit-transform: translatez(0);
+  -moz-transform: translatez(0);
+  -ms-transform: translatez(0);
+  -o-transform: translatez(0);
+  transform: translatez(0);
 }
 
 .reasons li:after {
