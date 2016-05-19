@@ -37,8 +37,9 @@
 .reasons li {
   border-top: 1px solid white;
   height: 0;
-  opacity: 1;
+  opacity: 0;
   position: relative;
+  overflow: hidden;
  -webkit-transition: height ease-out 0.3s, opacity ease-out 0.1s; 
   -moz-transition: height ease-out 0.3s, opacity ease-out 0.1s; 
   -o-transition: height ease-out 0.3s, opacity ease-out 0.1s; 
@@ -53,10 +54,15 @@
 .close {
   display: none;
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 5px;
+  top: 3px;
+  font-size: 15px;
   color: white;
   cursor: pointer;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none; 
 }
 
 .reasons li:hover .close {
@@ -65,11 +71,11 @@
 
 .reasons li:after {
   content: attr(text);
-  font-size: 14px;
+  font-size: 15px;
   padding-left: 5px;
   font-weight: 200;
   color: white;
-  opacity: 0.7;
+  opacity: 0.6;
   letter-spacing: 0.6px;
 }
 

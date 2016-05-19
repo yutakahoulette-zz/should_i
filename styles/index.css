@@ -36,10 +36,7 @@ main {
 
 header {
   text-align: center;
-  margin-bottom: 40px;
-}
-
-h1 {
+  margin: 20px 0 40px 0;
   white-space: pre;
   font-size: 1.7rem;
   max-width: 100%;
@@ -77,20 +74,22 @@ input:focus {
   border-bottom-color: rgba(0,0,0,0.5);
 }
 
-h1 input {
+
+
+header input {
   min-width: 6rem;
 }
 
-h1 div:after {
+header form:after {
   content: '?';
 }
 
-form {
+footer {
   text-align: center;
   margin: 30px 0 20px 0;
 }
 
-form input {
+footer input {
   width: 12em;
 }
 

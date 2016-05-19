@@ -19427,21 +19427,16 @@ var _placeholders = require('./placeholders');
 
 var _placeholders2 = _interopRequireDefault(_placeholders);
 
-var container = document.getElementById('container');
 var mapIndexed = _ramda2['default'].addIndex(_ramda2['default'].map);
-
 var randEl = function randEl(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
 var placeholder = randEl(_placeholders2['default']);
+var container = document.getElementById('container');
 
 var view = function view(ctx) {
-  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('section', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))])]), (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submit } }, [(0, _snabbdomH2['default'])('p.error', ctx.state.error), (0, _snabbdomH2['default'])('input', { props: {
-      autocomplete: 'off',
-      name: 'reason[0]',
-      type: 'text',
-      placeholder: 'Add pro or con' } }), (0, _rating2['default'])(-5, 5, 'reason[1]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Save')])]);
+  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('section', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))])]), footer(ctx)]);
 };
 
 var round = function round(a) {
@@ -19453,38 +19448,56 @@ var scale = function scale(max) {
 };
 
 var header = function header(ctx) {
-  return (0, _snabbdomH2['default'])('header', [(0, _snabbdomH2['default'])('h1.title', ['Should I ', (0, _snabbdomH2['default'])('div', [(0, _snabbdomH2['default'])('input', { props: { autofocus: true, placeholder: placeholder, autocomplete: 'off' },
-    style: { width: ctx.state.title ? (0, _elementWidth2['default'])(ctx.state.title, 'h1') + 30 + 'px' : (0, _elementWidth2['default'])(placeholder, 'h1') + 30 + 'px' },
+  return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submitTitle } }, [(0, _snabbdomH2['default'])('input', { props: { autofocus: true, placeholder: placeholder, autocomplete: 'off' },
+    style: { width: ctx.state.title ? (0, _elementWidth2['default'])(ctx.state.title, 'header') + 30 + 'px' : (0, _elementWidth2['default'])(placeholder, 'header') + 30 + 'px' },
     on: { keyup: ctx.streams.saveTitle }
-  })])])]);
+  })])]);
 };
 
 var reasonsList = function reasonsList(ctx, proOrCon) {
   return mapIndexed(function (reason, i) {
     return (0, _snabbdomH2['default'])('li', {
       attrs: { index: i, text: reason[0], rating: reason[1] },
-      style: { delayed: { height: Math.abs(reason[1]) / ctx.state.max * 100 + '%' },
-        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.remove } }, '×')]);
+      style: { delayed: { height: Math.abs(reason[1]) / ctx.state.max * 100 + '%', opacity: '1' },
+        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×')]);
   }, ctx.state.reasons[proOrCon]);
+};
+
+var footer = function footer(ctx) {
+  return (0, _snabbdomH2['default'])('footer', [(0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.saveReason } }, [(0, _snabbdomH2['default'])('p.error', ctx.state.error), (0, _snabbdomH2['default'])('input', { props: {
+      autocomplete: 'off',
+      name: 'reason[0]',
+      type: 'text',
+      placeholder: 'Add pro or con'
+    },
+    hook: {
+      update: function update(vnode) {
+        ctx.state.focusProOrCon ? vnode.elm.focus() : false;
+      }
+    }
+  }), (0, _rating2['default'])(-5, 5, 'reason[1]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Save')])]);
 };
 
 function init() {
   return {
     streams: {
-      submit: _flyd2['default'].stream(),
+      saveReason: _flyd2['default'].stream(),
       saveTitle: _flyd2['default'].stream(),
-      remove: _flyd2['default'].stream()
+      submitTitle: _flyd2['default'].stream(),
+      removeReason: _flyd2['default'].stream()
     },
     updates: {
-      submit: submit,
+      saveReason: saveReason,
       saveTitle: saveTitle,
-      remove: remove
+      removeReason: removeReason,
+      submitTitle: submitTitle
     },
     state: {
       reasons: { pros: [], cons: [] },
       title: '',
       max: 5,
-      error: ''
+      error: '',
+      focusProOrCon: false
     }
   };
 }
@@ -19493,7 +19506,7 @@ var saveTitle = function saveTitle(ev, state) {
   return _ramda2['default'].assoc('title', ev.target.value, state);
 };
 
-function submit(ev, state) {
+function saveReason(ev, state) {
   ev.preventDefault();
   var form = ev.target;
   var reason = (0, _formSerialize2['default'])(form, { hash: true }).reason;
@@ -19502,7 +19515,7 @@ function submit(ev, state) {
     return _ramda2['default'].assoc('error', plz + ' pro or con and a rating', state);
   }
   if (!reason[0]) {
-    return _ramda2['default'].assoc('error', plz + ' pro or con', state);
+    return _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('error', plz + ' pro or con', state));
   }
   if (!reason[1]) {
     return _ramda2['default'].assoc('error', plz + ' rating', state);
@@ -19511,10 +19524,15 @@ function submit(ev, state) {
   var newState = _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].append(reason, state.reasons[proOrCon]), state);
   var max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons));
   form.reset();
-  return _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState));
+  return _ramda2['default'].assoc('focusProOfCon', true, _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState)));
 }
 
-function remove(ev, state) {
+function submitTitle(ev, state) {
+  ev.preventDefault();
+  return _ramda2['default'].assoc('focusProOrCon', true, state);
+}
+
+function removeReason(ev, state) {
   var el = ev.target.parentElement;
   var proOrCon = el.getAttribute('rating') > 0 ? 'pros' : 'cons';
   var i = el.getAttribute('index');
