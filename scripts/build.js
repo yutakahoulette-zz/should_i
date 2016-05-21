@@ -19435,9 +19435,10 @@ var randEl = function randEl(arr) {
 var placeholder = randEl(_placeholders2['default']);
 var container = document.getElementById('container');
 
-var view = function view(ctx) {
+function view(ctx) {
+  console.log(ctx.state);
   return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('section', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))])]), footer(ctx)]);
-};
+}
 
 var round = function round(a) {
   return Math.round(a * 10) / 10;
@@ -19454,13 +19455,13 @@ var header = function header(ctx) {
   })])]);
 };
 
-var reasonsList = function reasonsList(ctx, proOrCon) {
+var reasonsList = function reasonsList(ctx, pc) {
   return mapIndexed(function (reason, i) {
     return (0, _snabbdomH2['default'])('li', {
-      attrs: { index: i, text: reason[0], rating: reason[1] },
+      attrs: { index: i, rating: reason[1] },
       style: { delayed: { height: Math.abs(reason[1]) / ctx.state.max * 100 + '%', opacity: '1' },
-        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×')]);
-  }, ctx.state.reasons[proOrCon]);
+        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×'), (0, _snabbdomH2['default'])('span.text', { on: { click: ctx.streams.editReason } }, reason[0])]);
+  }, ctx.state.reasons[pc]);
 };
 
 var footer = function footer(ctx) {
@@ -19484,20 +19485,23 @@ function init() {
       saveReason: _flyd2['default'].stream(),
       saveTitle: _flyd2['default'].stream(),
       submitTitle: _flyd2['default'].stream(),
-      removeReason: _flyd2['default'].stream()
+      removeReason: _flyd2['default'].stream(),
+      editReason: _flyd2['default'].stream()
     },
     updates: {
       saveReason: saveReason,
       saveTitle: saveTitle,
       removeReason: removeReason,
-      submitTitle: submitTitle
+      submitTitle: submitTitle,
+      editReason: editReason
     },
     state: {
       reasons: { pros: [], cons: [] },
       title: '',
       max: 5,
       error: '',
-      focusProOrCon: false
+      focusProOrCon: false,
+      editingReason: false
     }
   };
 }
@@ -19520,8 +19524,8 @@ function saveReason(ev, state) {
   if (!reason[1]) {
     return _ramda2['default'].assoc('error', plz + ' rating', state);
   }
-  var proOrCon = reason[1] > 0 ? 'pros' : 'cons';
-  var newState = _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].append(reason, state.reasons[proOrCon]), state);
+  var pc = proOrCon(reason[1]);
+  var newState = _ramda2['default'].assocPath(['reasons', pc], _ramda2['default'].append(reason, state.reasons[pc]), state);
   var max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons));
   form.reset();
   return _ramda2['default'].assoc('focusProOfCon', true, _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState)));
@@ -19533,11 +19537,22 @@ function submitTitle(ev, state) {
 }
 
 function removeReason(ev, state) {
-  var el = ev.target.parentElement;
-  var proOrCon = el.getAttribute('rating') > 0 ? 'pros' : 'cons';
-  var i = el.getAttribute('index');
-  return _ramda2['default'].assocPath(['reasons', proOrCon], _ramda2['default'].remove(Number(i), 1, state.reasons[proOrCon]), state);
+  var data = attrData(ev.target.parentElement);
+  return _ramda2['default'].assocPath(['reasons', data.pc], _ramda2['default'].remove(Number(data.i), 1, state.reasons[data.pc]), state);
 }
+
+function attrData(el) {
+  return { pc: proOrCon(el.getAttribute('rating')), i: el.getAttribute('index') };
+}
+
+function editReason(ev, state) {
+  var data = attrData(ev.target.parentElement);
+  return _ramda2['default'].assoc('editingReason', [data.pc, data.i], state);
+}
+
+var proOrCon = function proOrCon(rating) {
+  return rating > 0 ? 'pros' : 'cons';
+};
 
 var totalIn = function totalIn(i, arr) {
   return _ramda2['default'].reduce(posAdd, 0, _ramda2['default'].pluck(i, arr));

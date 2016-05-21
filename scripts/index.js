@@ -13,8 +13,9 @@ const randEl = (arr) => arr[Math.floor(Math.random() * arr.length)]
 let placeholder = randEl(placeholders)
 let container = document.getElementById('container')
 
-const view = (ctx) =>
-  h('main', [
+function view(ctx) {
+  console.log(ctx.state)
+  return h('main', [
     header(ctx)
   , h('div.reasons', [
       h('aside', scale(ctx.state.max))
@@ -25,6 +26,7 @@ const view = (ctx) =>
     ])
   , footer(ctx)
   ])
+}
 
 const round = (a) => Math.round(a * 10) / 10
 
@@ -51,13 +53,16 @@ const header = (ctx) =>
     ])
 
 
-const reasonsList = (ctx, proOrCon) => 
+const reasonsList = (ctx, pc) => 
   mapIndexed((reason, i) => h('li', {
-      attrs: {index: i, text: reason[0], rating: reason[1]}
+      attrs: {index: i, rating: reason[1]}
     , style: {delayed:  {height: `${(Math.abs(reason[1]) / ctx.state.max) * 100}%`, opacity: '1'},
               remove: {opacity: '0'}}}
-    , [h('span.close', {on: {click: ctx.streams.removeReason}}, '×')])
-  , ctx.state.reasons[proOrCon])
+    , [
+        h('span.close', {on: {click: ctx.streams.removeReason}}, '×')
+      , h('span.text', {on: {click: ctx.streams.editReason}}, reason[0])
+      ])
+  , ctx.state.reasons[pc])
 
 
 const footer = (ctx) =>
@@ -87,12 +92,14 @@ function init(){
     , saveTitle: flyd.stream()
     , submitTitle: flyd.stream()
     , removeReason: flyd.stream()
+    , editReason: flyd.stream()
     }
   , updates: {
       saveReason: saveReason 
     , saveTitle: saveTitle
     , removeReason: removeReason
     , submitTitle: submitTitle
+    , editReason: editReason
     } 
   , state: {
       reasons: {pros:[], cons:[]}
@@ -100,6 +107,7 @@ function init(){
     , max: 5
     , error: ''
     , focusProOrCon: false
+    , editingReason: false
     }
   }
 }
@@ -120,8 +128,8 @@ function saveReason(ev, state) {
   if(!reason[1]) {
     return R.assoc('error', `${plz} rating`, state)
   }
-  let proOrCon = reason[1] > 0 ? 'pros' : 'cons'
-  let newState = R.assocPath(['reasons', proOrCon], R.append(reason, state.reasons[proOrCon]), state) 
+  let pc = proOrCon(reason[1])
+  let newState = R.assocPath(['reasons', pc], R.append(reason, state.reasons[pc]), state) 
   let max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons)) 
   form.reset()
   return R.assoc('focusProOfCon', true, (R.assoc('error', '', R.assoc('max', max, newState))))
@@ -134,12 +142,23 @@ function submitTitle(ev, state) {
 
 
 function removeReason(ev, state) {
-  let el = ev.target.parentElement
-  let proOrCon = el.getAttribute('rating') > 0 ? 'pros' : 'cons' 
-  let i = el.getAttribute('index')
-  return R.assocPath(['reasons', proOrCon], R.remove(Number(i), 1, state.reasons[proOrCon]), state)
+  let data = attrData(ev.target.parentElement)
+  return R.assocPath(['reasons', data.pc], R.remove(Number(data.i), 1, state.reasons[data.pc]), state)
 }
 
+
+function attrData(el) {
+  return {pc: proOrCon(el.getAttribute('rating')), i : el.getAttribute('index')}
+}
+
+
+function editReason(ev, state) {
+  let data = attrData(ev.target.parentElement)
+  return R.assoc('editingReason', [data.pc, data.i], state)  
+}
+
+
+const proOrCon = (rating) => rating > 0 ? 'pros' : 'cons'
 
 const totalIn = (i, arr) => R.reduce(posAdd, 0, R.pluck(i, arr))
 
