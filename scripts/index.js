@@ -56,6 +56,7 @@ const header = (ctx) =>
 const reasonsList = (ctx, pc) => 
   mapIndexed((reason, i) => h('li', {
       attrs: {index: i, rating: reason[1]}
+    , class: {selected: selected(ctx.state.editingReason, pc, i)}
     , style: {delayed:  {height: `${(Math.abs(reason[1]) / ctx.state.max) * 100}%`, opacity: '1'},
               remove: {opacity: '0'}}}
     , [
@@ -64,6 +65,8 @@ const reasonsList = (ctx, pc) =>
       ])
   , ctx.state.reasons[pc])
 
+const selected = (editingReason, pc, i) =>
+  editingReason && pc === editingReason[0] && i === Number(editingReason[1])
 
 const footer = (ctx) =>
   h('footer', [

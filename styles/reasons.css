@@ -35,7 +35,6 @@
 }
 
 .reasons li {
-  border-top: 1px solid white;
   height: 0;
   opacity: 0;
   position: relative;
@@ -49,6 +48,10 @@
   -ms-transform: translatez(0);
   -o-transform: translatez(0);
   transform: translatez(0);
+}
+
+.reasons li:first-of-type {
+  border: none;
 }
 
 .reasons .close,
@@ -71,6 +74,15 @@
 
 .reasons li:hover .close {
   display: initial;
+}
+
+.reasons li.selected {
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.6);
+  border: none;
+}
+
+.reasons li.selected + li {
+  border: none;
 }
 
 .reasons li .text {

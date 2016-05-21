@@ -19459,9 +19459,14 @@ var reasonsList = function reasonsList(ctx, pc) {
   return mapIndexed(function (reason, i) {
     return (0, _snabbdomH2['default'])('li', {
       attrs: { index: i, rating: reason[1] },
+      'class': { selected: selected(ctx.state.editingReason, pc, i) },
       style: { delayed: { height: Math.abs(reason[1]) / ctx.state.max * 100 + '%', opacity: '1' },
         remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×'), (0, _snabbdomH2['default'])('span.text', { on: { click: ctx.streams.editReason } }, reason[0])]);
   }, ctx.state.reasons[pc]);
+};
+
+var selected = function selected(editingReason, pc, i) {
+  return editingReason && pc === editingReason[0] && i === Number(editingReason[1]);
 };
 
 var footer = function footer(ctx) {

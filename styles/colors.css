@@ -1,9 +1,17 @@
 ul.pros li {
+  background: rgba(14, 49, 19, 0.6);
+}
+
+ul.pros li.selected {
   background: rgba(14, 49, 19, 0.55);
 }
 
 ul.cons li {
   background: rgba(170, 16, 6, 0.8);
+}
+
+ul.cons li.selected {
+  background: rgba(170, 16, 6, 0.75);
 }
 
 .rating input.neg + label:after {
@@ -16,5 +24,13 @@ ul.cons li {
 
 p.error {
   color: rgba(0,0,0, 0.6);
+}
+
+html {
+  background: #FFF7ED;
+}
+
+.reasons li {
+  border-bottom: 1px solid #FFF7ED;
 }
 
