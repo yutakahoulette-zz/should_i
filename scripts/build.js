@@ -19458,30 +19458,31 @@ var header = function header(ctx) {
 var reasonsList = function reasonsList(ctx, pc) {
   return mapIndexed(function (reason, i) {
     return (0, _snabbdomH2['default'])('li', {
-      attrs: { index: i, rating: reason[1] },
-      'class': { selected: selected(ctx.state.editingReason, pc, i) },
-      style: { delayed: { height: Math.abs(reason[1]) / ctx.state.max * 100 + '%', opacity: '1' },
-        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×'), (0, _snabbdomH2['default'])('span.text', { on: { click: ctx.streams.editReason } }, reason[0])]);
+      attrs: { index: i, rating: reason.rating },
+      'class': { selected: selected(ctx.state.editingKey, pc, i) },
+      style: { delayed: { height: Math.abs(reason.rating) / ctx.state.max * 100 + '%', opacity: '1' },
+        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×'), (0, _snabbdomH2['default'])('span.text', { on: { click: ctx.streams.editKey } }, reason.name)]);
   }, ctx.state.reasons[pc]);
 };
 
-var selected = function selected(editingReason, pc, i) {
-  return editingReason && pc === editingReason[0] && i === Number(editingReason[1]);
+var selected = function selected(editingKey, pc, i) {
+  return editingKey && pc === editingKey.pc && i === Number(editingKey.i);
 };
 
 var footer = function footer(ctx) {
   return (0, _snabbdomH2['default'])('footer', [(0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.saveReason } }, [(0, _snabbdomH2['default'])('p.error', ctx.state.error), (0, _snabbdomH2['default'])('input', { props: {
       autocomplete: 'off',
-      name: 'reason[0]',
+      name: 'reason[name]',
       type: 'text',
-      placeholder: 'Add pro or con'
+      placeholder: 'Add pro or con',
+      value: ctx.state.editingKey ? ctx.state.reasons[ctx.state.editingKey.pc][ctx.state.editingKey.i]['name'] : ''
     },
     hook: {
       update: function update(vnode) {
         ctx.state.focusProOrCon ? vnode.elm.focus() : false;
       }
     }
-  }), (0, _rating2['default'])(-5, 5, 'reason[1]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Save')])]);
+  }), (0, _rating2['default'])(-5, 5, 'reason[rating]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Save')])]);
 };
 
 function init() {
@@ -19491,14 +19492,14 @@ function init() {
       saveTitle: _flyd2['default'].stream(),
       submitTitle: _flyd2['default'].stream(),
       removeReason: _flyd2['default'].stream(),
-      editReason: _flyd2['default'].stream()
+      editKey: _flyd2['default'].stream()
     },
     updates: {
       saveReason: saveReason,
       saveTitle: saveTitle,
       removeReason: removeReason,
       submitTitle: submitTitle,
-      editReason: editReason
+      editKey: editKey
     },
     state: {
       reasons: { pros: [], cons: [] },
@@ -19506,7 +19507,7 @@ function init() {
       max: 5,
       error: '',
       focusProOrCon: false,
-      editingReason: false
+      editingKey: false
     }
   };
 }
@@ -19523,17 +19524,17 @@ function saveReason(ev, state) {
   if (!reason) {
     return _ramda2['default'].assoc('error', plz + ' pro or con and a rating', state);
   }
-  if (!reason[0]) {
+  if (!reason.name) {
     return _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('error', plz + ' pro or con', state));
   }
-  if (!reason[1]) {
+  if (!reason.rating) {
     return _ramda2['default'].assoc('error', plz + ' rating', state);
   }
-  var pc = proOrCon(reason[1]);
+  var pc = proOrCon(reason.rating);
   var newState = _ramda2['default'].assocPath(['reasons', pc], _ramda2['default'].append(reason, state.reasons[pc]), state);
-  var max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons));
+  var max = larger(totalIn('rating', newState.reasons.pros), totalIn('rating', newState.reasons.cons));
   form.reset();
-  return _ramda2['default'].assoc('focusProOfCon', true, _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState)));
+  return _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState)));
 }
 
 function submitTitle(ev, state) {
@@ -19543,24 +19544,23 @@ function submitTitle(ev, state) {
 
 function removeReason(ev, state) {
   var data = attrData(ev.target.parentElement);
-  return _ramda2['default'].assocPath(['reasons', data.pc], _ramda2['default'].remove(Number(data.i), 1, state.reasons[data.pc]), state);
+  return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assocPath(['reasons', data.pc], _ramda2['default'].remove(Number(data.i), 1, state.reasons[data.pc]), state));
 }
 
 function attrData(el) {
   return { pc: proOrCon(el.getAttribute('rating')), i: el.getAttribute('index') };
 }
 
-function editReason(ev, state) {
-  var data = attrData(ev.target.parentElement);
-  return _ramda2['default'].assoc('editingReason', [data.pc, data.i], state);
-}
+var editKey = function editKey(ev, state) {
+  return _ramda2['default'].assoc('editingKey', attrData(ev.target.parentElement), state);
+};
 
 var proOrCon = function proOrCon(rating) {
   return rating > 0 ? 'pros' : 'cons';
 };
 
-var totalIn = function totalIn(i, arr) {
-  return _ramda2['default'].reduce(posAdd, 0, _ramda2['default'].pluck(i, arr));
+var totalIn = function totalIn(key, arr) {
+  return _ramda2['default'].reduce(posAdd, 0, _ramda2['default'].pluck(key, arr));
 };
 
 var posAdd = function posAdd(a, b) {
@@ -19597,7 +19597,7 @@ var _ramda2 = _interopRequireDefault(_ramda);
 
 var mapIndexed = _ramda2['default'].addIndex(_ramda2['default'].map);
 
-function rating(min, max, name) {
+function rating(min, max, name, state) {
   var range = _ramda2['default'].without([0], _ramda2['default'].range(min, max + 1));
   return (0, _snabbdomH2['default'])('span.rating', _ramda2['default'].flatten(mapIndexed(function (r, i) {
     return [(0, _snabbdomH2['default'])('input' + (r < 0 ? '.neg' : '.pos'), {

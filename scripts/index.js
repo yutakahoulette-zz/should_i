@@ -55,18 +55,18 @@ const header = (ctx) =>
 
 const reasonsList = (ctx, pc) => 
   mapIndexed((reason, i) => h('li', {
-      attrs: {index: i, rating: reason[1]}
-    , class: {selected: selected(ctx.state.editingReason, pc, i)}
-    , style: {delayed:  {height: `${(Math.abs(reason[1]) / ctx.state.max) * 100}%`, opacity: '1'},
+      attrs: {index: i, rating: reason.rating}
+    , class: {selected: selected(ctx.state.editingKey, pc, i)}
+    , style: {delayed:  {height: `${(Math.abs(reason.rating) / ctx.state.max) * 100}%`, opacity: '1'},
               remove: {opacity: '0'}}}
     , [
         h('span.close', {on: {click: ctx.streams.removeReason}}, '×')
-      , h('span.text', {on: {click: ctx.streams.editReason}}, reason[0])
+      , h('span.text', {on: {click: ctx.streams.editKey}}, reason.name)
       ])
   , ctx.state.reasons[pc])
 
-const selected = (editingReason, pc, i) =>
-  editingReason && pc === editingReason[0] && i === Number(editingReason[1])
+const selected = (editingKey, pc, i) =>
+  editingKey && pc === editingKey.pc && i === Number(editingKey.i)
 
 const footer = (ctx) =>
   h('footer', [
@@ -74,19 +74,23 @@ const footer = (ctx) =>
     , [ h('p.error', ctx.state.error)
       , h('input', {props: {
                       autocomplete: 'off'
-                    , name: 'reason[0]'
+                    , name: 'reason[name]'
                     , type: 'text'
                     , placeholder: 'Add pro or con'
+                    , value: ctx.state.editingKey 
+                      ? ctx.state.reasons[ctx.state.editingKey.pc][ctx.state.editingKey.i]['name']
+                      : ''
                     }
                     , hook: {
                       update: (vnode) => { ctx.state.focusProOrCon ? vnode.elm.focus() : false }
                     }
                     })
-      , rating(-5, 5, 'reason[1]')
+      , rating(-5, 5, 'reason[rating]')
       , h('button', {props: {type: 'submit'}}, 'Save')
       ]
     )
   ])
+
 
 function init(){
   return {
@@ -95,14 +99,14 @@ function init(){
     , saveTitle: flyd.stream()
     , submitTitle: flyd.stream()
     , removeReason: flyd.stream()
-    , editReason: flyd.stream()
+    , editKey: flyd.stream()
     }
   , updates: {
       saveReason: saveReason 
     , saveTitle: saveTitle
     , removeReason: removeReason
     , submitTitle: submitTitle
-    , editReason: editReason
+    , editKey: editKey
     } 
   , state: {
       reasons: {pros:[], cons:[]}
@@ -110,7 +114,7 @@ function init(){
     , max: 5
     , error: ''
     , focusProOrCon: false
-    , editingReason: false
+    , editingKey: false
     }
   }
 }
@@ -125,17 +129,17 @@ function saveReason(ev, state) {
   if(!reason) {
     return R.assoc('error', `${plz} pro or con and a rating`, state)
   }
-  if(!reason[0]) {
+  if(!reason.name) {
     return R.assoc('focusProOrCon', true, R.assoc('error', `${plz} pro or con`, state))
   }
-  if(!reason[1]) {
+  if(!reason.rating) {
     return R.assoc('error', `${plz} rating`, state)
   }
-  let pc = proOrCon(reason[1])
+  let pc = proOrCon(reason.rating)
   let newState = R.assocPath(['reasons', pc], R.append(reason, state.reasons[pc]), state) 
-  let max = larger(totalIn(1, newState.reasons.pros), totalIn(1, newState.reasons.cons)) 
+  let max = larger(totalIn('rating', newState.reasons.pros), totalIn('rating', newState.reasons.cons)) 
   form.reset()
-  return R.assoc('focusProOfCon', true, (R.assoc('error', '', R.assoc('max', max, newState))))
+  return R.assoc('focusProOrCon', true, (R.assoc('error', '', R.assoc('max', max, newState))))
 }
 
 function submitTitle(ev, state) {
@@ -146,24 +150,19 @@ function submitTitle(ev, state) {
 
 function removeReason(ev, state) {
   let data = attrData(ev.target.parentElement)
-  return R.assocPath(['reasons', data.pc], R.remove(Number(data.i), 1, state.reasons[data.pc]), state)
+  return R.assoc('editingKey', false, R.assocPath(['reasons', data.pc], R.remove(Number(data.i), 1, state.reasons[data.pc]), state))
 }
-
 
 function attrData(el) {
   return {pc: proOrCon(el.getAttribute('rating')), i : el.getAttribute('index')}
 }
 
-
-function editReason(ev, state) {
-  let data = attrData(ev.target.parentElement)
-  return R.assoc('editingReason', [data.pc, data.i], state)  
-}
-
+const editKey = (ev, state) =>
+  R.assoc('editingKey', attrData(ev.target.parentElement), state)  
 
 const proOrCon = (rating) => rating > 0 ? 'pros' : 'cons'
 
-const totalIn = (i, arr) => R.reduce(posAdd, 0, R.pluck(i, arr))
+const totalIn = (key, arr) => R.reduce(posAdd, 0, R.pluck(key, arr))
 
 const posAdd = (a, b) => R.add(Math.abs(a), Math.abs(b))
 
