@@ -56,10 +56,6 @@ input {
    color: rgba(0,0,0,0.3);
 }
 
-:-moz-placeholder { /* Firefox 18- */
-   color: rgba(0,0,0,0.3);
-}
-
 ::-moz-placeholder {  /* Firefox 19+ */
    color: rgba(0,0,0,0.3);
 }
@@ -71,12 +67,6 @@ input {
 input:focus {
   outline: transparent;
   border-bottom-color: rgba(0,0,0,0.5);
-}
-
-
-
-header input {
-  min-width: 6rem;
 }
 
 header form:after {

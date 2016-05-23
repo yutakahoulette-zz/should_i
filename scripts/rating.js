@@ -8,11 +8,19 @@ function rating(min, max, name, state) {
          , R.flatten(mapIndexed((r, i) =>  [
             h(`input${r < 0 ? '.neg' : '.pos'}`, {
               props: {type: 'radio', value: r, name: name, id: `${name}-${i}`}
-            , style: {display: 'none'}})
+            , style: {display: 'none'}
+            , hook: {
+                update: (vnode) => {
+                  vnode.elm.checked = state.editingKey 
+                  && r === Number(state.reasons[state.editingKey.pc][state.editingKey.i].rating)
+                }
+              }
+            })
           , h('label', {attrs: {for: `${name}-${i}`, rating: r}})
           ], range))
         )
 }
+
 
 module.exports = rating
 

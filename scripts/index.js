@@ -45,13 +45,12 @@ const header = (ctx) =>
       , [h('input'
         , {props: { autofocus: true, placeholder: placeholder, autocomplete: 'off' }
           , style: { width: ctx.state.title 
-            ? (getWidth(ctx.state.title, 'header') + 30 + 'px')
-            : (getWidth(placeholder, 'header') + 30 + 'px')}
-          , on: {keyup: ctx.streams.saveTitle}
+            ? (getWidth(ctx.state.title, 'header') + 8 + 'px')
+            : (getWidth(placeholder, 'header') + 8 + 'px')}
+          , on: {input: ctx.streams.saveTitle}
           })
       ])
     ])
-
 
 const reasonsList = (ctx, pc) => 
   mapIndexed((reason, i) => h('li', {
@@ -66,7 +65,7 @@ const reasonsList = (ctx, pc) =>
   , ctx.state.reasons[pc])
 
 const selected = (editingKey, pc, i) =>
-  editingKey && pc === editingKey.pc && i === Number(editingKey.i)
+  editingKey && pc === editingKey.pc && i === editingKey.i
 
 const footer = (ctx) =>
   h('footer', [
@@ -85,7 +84,7 @@ const footer = (ctx) =>
                       update: (vnode) => { ctx.state.focusProOrCon ? vnode.elm.focus() : false }
                     }
                     })
-      , rating(-5, 5, 'reason[rating]')
+      , rating(-5, 5, 'reason[rating]', ctx.state)
       , h('button', {props: {type: 'submit'}}, 'Save')
       ]
     )
@@ -136,10 +135,18 @@ function saveReason(ev, state) {
     return R.assoc('error', `${plz} rating`, state)
   }
   let pc = proOrCon(reason.rating)
-  let newState = R.assocPath(['reasons', pc], R.append(reason, state.reasons[pc]), state) 
+  if(state.editingKey) {
+    state = R.assocPath(['reasons', state.editingKey.pc]
+                      , R.remove(state.editingKey.i, 1, state.reasons[state.editingKey.pc])
+                      , state)    
+  }
+  let newState = R.assocPath(['reasons', pc], R.append(reason, state.reasons[pc]), state)    
   let max = larger(totalIn('rating', newState.reasons.pros), totalIn('rating', newState.reasons.cons)) 
   form.reset()
-  return R.assoc('focusProOrCon', true, (R.assoc('error', '', R.assoc('max', max, newState))))
+  return R.assoc('editingKey', false
+         , R.assoc('focusProOrCon', true
+         , R.assoc('error', ''
+         , R.assoc('max', max, newState))))
 }
 
 function submitTitle(ev, state) {
@@ -150,15 +157,15 @@ function submitTitle(ev, state) {
 
 function removeReason(ev, state) {
   let data = attrData(ev.target.parentElement)
-  return R.assoc('editingKey', false, R.assocPath(['reasons', data.pc], R.remove(Number(data.i), 1, state.reasons[data.pc]), state))
+  return R.assoc('editingKey', false, R.assocPath(['reasons', data.pc], R.remove(data.i, 1, state.reasons[data.pc]), state))
 }
 
 function attrData(el) {
-  return {pc: proOrCon(el.getAttribute('rating')), i : el.getAttribute('index')}
+  return {pc: proOrCon(el.getAttribute('rating')), i : Number(el.getAttribute('index'))}
 }
 
 const editKey = (ev, state) =>
-  R.assoc('editingKey', attrData(ev.target.parentElement), state)  
+  R.assoc('error', 'Editing...', R.assoc('editingKey', attrData(ev.target.parentElement), state))
 
 const proOrCon = (rating) => rating > 0 ? 'pros' : 'cons'
 
@@ -169,6 +176,5 @@ const posAdd = (a, b) => R.add(Math.abs(a), Math.abs(b))
 const larger = (a, b) => a >= b ? a : b 
 
 render(init(), view, container)
-
 
 window.R = R

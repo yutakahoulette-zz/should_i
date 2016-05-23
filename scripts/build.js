@@ -19450,8 +19450,8 @@ var scale = function scale(max) {
 
 var header = function header(ctx) {
   return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submitTitle } }, [(0, _snabbdomH2['default'])('input', { props: { autofocus: true, placeholder: placeholder, autocomplete: 'off' },
-    style: { width: ctx.state.title ? (0, _elementWidth2['default'])(ctx.state.title, 'header') + 30 + 'px' : (0, _elementWidth2['default'])(placeholder, 'header') + 30 + 'px' },
-    on: { keyup: ctx.streams.saveTitle }
+    style: { width: ctx.state.title ? (0, _elementWidth2['default'])(ctx.state.title, 'header') + 8 + 'px' : (0, _elementWidth2['default'])(placeholder, 'header') + 8 + 'px' },
+    on: { input: ctx.streams.saveTitle }
   })])]);
 };
 
@@ -19466,7 +19466,7 @@ var reasonsList = function reasonsList(ctx, pc) {
 };
 
 var selected = function selected(editingKey, pc, i) {
-  return editingKey && pc === editingKey.pc && i === Number(editingKey.i);
+  return editingKey && pc === editingKey.pc && i === editingKey.i;
 };
 
 var footer = function footer(ctx) {
@@ -19482,7 +19482,7 @@ var footer = function footer(ctx) {
         ctx.state.focusProOrCon ? vnode.elm.focus() : false;
       }
     }
-  }), (0, _rating2['default'])(-5, 5, 'reason[rating]'), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Save')])]);
+  }), (0, _rating2['default'])(-5, 5, 'reason[rating]', ctx.state), (0, _snabbdomH2['default'])('button', { props: { type: 'submit' } }, 'Save')])]);
 };
 
 function init() {
@@ -19531,10 +19531,13 @@ function saveReason(ev, state) {
     return _ramda2['default'].assoc('error', plz + ' rating', state);
   }
   var pc = proOrCon(reason.rating);
+  if (state.editingKey) {
+    state = _ramda2['default'].assocPath(['reasons', state.editingKey.pc], _ramda2['default'].remove(state.editingKey.i, 1, state.reasons[state.editingKey.pc]), state);
+  }
   var newState = _ramda2['default'].assocPath(['reasons', pc], _ramda2['default'].append(reason, state.reasons[pc]), state);
   var max = larger(totalIn('rating', newState.reasons.pros), totalIn('rating', newState.reasons.cons));
   form.reset();
-  return _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState)));
+  return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState))));
 }
 
 function submitTitle(ev, state) {
@@ -19544,15 +19547,15 @@ function submitTitle(ev, state) {
 
 function removeReason(ev, state) {
   var data = attrData(ev.target.parentElement);
-  return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assocPath(['reasons', data.pc], _ramda2['default'].remove(Number(data.i), 1, state.reasons[data.pc]), state));
+  return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assocPath(['reasons', data.pc], _ramda2['default'].remove(data.i, 1, state.reasons[data.pc]), state));
 }
 
 function attrData(el) {
-  return { pc: proOrCon(el.getAttribute('rating')), i: el.getAttribute('index') };
+  return { pc: proOrCon(el.getAttribute('rating')), i: Number(el.getAttribute('index')) };
 }
 
 var editKey = function editKey(ev, state) {
-  return _ramda2['default'].assoc('editingKey', attrData(ev.target.parentElement), state);
+  return _ramda2['default'].assoc('error', 'Editing...', _ramda2['default'].assoc('editingKey', attrData(ev.target.parentElement), state));
 };
 
 var proOrCon = function proOrCon(rating) {
@@ -19602,7 +19605,13 @@ function rating(min, max, name, state) {
   return (0, _snabbdomH2['default'])('span.rating', _ramda2['default'].flatten(mapIndexed(function (r, i) {
     return [(0, _snabbdomH2['default'])('input' + (r < 0 ? '.neg' : '.pos'), {
       props: { type: 'radio', value: r, name: name, id: name + '-' + i },
-      style: { display: 'none' } }), (0, _snabbdomH2['default'])('label', { attrs: { 'for': name + '-' + i, rating: r } })];
+      style: { display: 'none' },
+      hook: {
+        update: function update(vnode) {
+          vnode.elm.checked = state.editingKey && r === Number(state.reasons[state.editingKey.pc][state.editingKey.i].rating);
+        }
+      }
+    }), (0, _snabbdomH2['default'])('label', { attrs: { 'for': name + '-' + i, rating: r } })];
   }, range)));
 }
 
