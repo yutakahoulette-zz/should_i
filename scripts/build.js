@@ -19513,7 +19513,7 @@ function init() {
 }
 
 var saveTitle = function saveTitle(ev, state) {
-  return _ramda2['default'].assoc('title', ev.target.value, state);
+  return _ramda2['default'].assoc('focusProOrCon', false, _ramda2['default'].assoc('title', ev.target.value, state));
 };
 
 function saveReason(ev, state) {
@@ -19534,10 +19534,10 @@ function saveReason(ev, state) {
   if (state.editingKey) {
     state = _ramda2['default'].assocPath(['reasons', state.editingKey.pc], _ramda2['default'].remove(state.editingKey.i, 1, state.reasons[state.editingKey.pc]), state);
   }
-  var newState = _ramda2['default'].assocPath(['reasons', pc], _ramda2['default'].append(reason, state.reasons[pc]), state);
-  var max = larger(totalIn('rating', newState.reasons.pros), totalIn('rating', newState.reasons.cons));
+  state = _ramda2['default'].assocPath(['reasons', pc], _ramda2['default'].append(reason, state.reasons[pc]), state);
+  var max = larger(totalIn('rating', state.reasons.pros), totalIn('rating', state.reasons.cons));
   form.reset();
-  return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, newState))));
+  return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, state))));
 }
 
 function submitTitle(ev, state) {
@@ -19555,7 +19555,11 @@ function attrData(el) {
 }
 
 var editKey = function editKey(ev, state) {
-  return _ramda2['default'].assoc('error', 'Editing...', _ramda2['default'].assoc('editingKey', attrData(ev.target.parentElement), state));
+  if (state.editingKey) {
+    return _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('editingKey', false, state));
+  } else {
+    return _ramda2['default'].assoc('error', 'Editing...', _ramda2['default'].assoc('editingKey', attrData(ev.target.parentElement), state));
+  }
 };
 
 var proOrCon = function proOrCon(rating) {

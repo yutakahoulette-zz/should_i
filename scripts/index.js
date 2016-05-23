@@ -118,7 +118,7 @@ function init(){
   }
 }
 
-const saveTitle = (ev, state) => R.assoc('title' , ev.target.value , state)
+const saveTitle = (ev, state) => R.assoc('focusProOrCon', false, R.assoc('title' , ev.target.value , state))
 
 function saveReason(ev, state) {
   ev.preventDefault()
@@ -140,13 +140,13 @@ function saveReason(ev, state) {
                       , R.remove(state.editingKey.i, 1, state.reasons[state.editingKey.pc])
                       , state)    
   }
-  let newState = R.assocPath(['reasons', pc], R.append(reason, state.reasons[pc]), state)    
-  let max = larger(totalIn('rating', newState.reasons.pros), totalIn('rating', newState.reasons.cons)) 
+  state = R.assocPath(['reasons', pc], R.append(reason, state.reasons[pc]), state)    
+  let max = larger(totalIn('rating', state.reasons.pros), totalIn('rating', state.reasons.cons)) 
   form.reset()
   return R.assoc('editingKey', false
          , R.assoc('focusProOrCon', true
          , R.assoc('error', ''
-         , R.assoc('max', max, newState))))
+         , R.assoc('max', max, state))))
 }
 
 function submitTitle(ev, state) {
@@ -164,8 +164,13 @@ function attrData(el) {
   return {pc: proOrCon(el.getAttribute('rating')), i : Number(el.getAttribute('index'))}
 }
 
-const editKey = (ev, state) =>
-  R.assoc('error', 'Editing...', R.assoc('editingKey', attrData(ev.target.parentElement), state))
+const editKey = (ev, state) => {
+  if(state.editingKey) {
+    return R.assoc('error', '', R.assoc('editingKey', false, state))
+  } else { 
+    return R.assoc('error', 'Editing...', R.assoc('editingKey', attrData(ev.target.parentElement), state))
+  }
+}
 
 const proOrCon = (rating) => rating > 0 ? 'pros' : 'cons'
 
