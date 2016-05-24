@@ -19437,7 +19437,7 @@ var container = document.getElementById('container');
 
 function view(ctx) {
   console.log(ctx.state);
-  return (0, _snabbdomH2['default'])('main', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('section', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))])]), footer(ctx)]);
+  return (0, _snabbdomH2['default'])('div#container', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('figure', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))])]), footer(ctx)]);
 }
 
 var round = function round(a) {
@@ -19461,7 +19461,7 @@ var reasonsList = function reasonsList(ctx, pc) {
       attrs: { index: i, rating: reason.rating },
       'class': { selected: selected(ctx.state.editingKey, pc, i) },
       style: { delayed: { height: Math.abs(reason.rating) / ctx.state.max * 100 + '%', opacity: '1' },
-        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×'), (0, _snabbdomH2['default'])('span.text', { on: { click: ctx.streams.editKey } }, reason.name)]);
+        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×'), (0, _snabbdomH2['default'])('figcaption', { on: { click: ctx.streams.editKey } }, reason.name)]);
   }, ctx.state.reasons[pc]);
 };
 
@@ -19470,7 +19470,7 @@ var selected = function selected(editingKey, pc, i) {
 };
 
 var footer = function footer(ctx) {
-  return (0, _snabbdomH2['default'])('footer', [(0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.saveReason } }, [(0, _snabbdomH2['default'])('p.error', ctx.state.error), (0, _snabbdomH2['default'])('input', { props: {
+  return (0, _snabbdomH2['default'])('footer', [(0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.saveReason } }, [(0, _snabbdomH2['default'])('p.notice', ctx.state.notice), (0, _snabbdomH2['default'])('input', { props: {
       autocomplete: 'off',
       name: 'reason[name]',
       type: 'text',
@@ -19505,7 +19505,7 @@ function init() {
       reasons: { pros: [], cons: [] },
       title: '',
       max: 5,
-      error: '',
+      notice: '',
       focusProOrCon: false,
       editingKey: false
     }
@@ -19522,13 +19522,13 @@ function saveReason(ev, state) {
   var reason = (0, _formSerialize2['default'])(form, { hash: true }).reason;
   var plz = 'Please enter a ';
   if (!reason) {
-    return _ramda2['default'].assoc('error', plz + ' pro or con and a rating', state);
+    return _ramda2['default'].assoc('notice', plz + ' pro or con and a rating', state);
   }
   if (!reason.name) {
-    return _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('error', plz + ' pro or con', state));
+    return _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('notice', plz + ' pro or con', state));
   }
   if (!reason.rating) {
-    return _ramda2['default'].assoc('error', plz + ' rating', state);
+    return _ramda2['default'].assoc('notice', plz + ' rating', state);
   }
   var pc = proOrCon(reason.rating);
   if (state.editingKey) {
@@ -19537,7 +19537,7 @@ function saveReason(ev, state) {
   state = _ramda2['default'].assocPath(['reasons', pc], _ramda2['default'].append(reason, state.reasons[pc]), state);
   var max = larger(totalIn('rating', state.reasons.pros), totalIn('rating', state.reasons.cons));
   form.reset();
-  return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('max', max, state))));
+  return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('notice', '', _ramda2['default'].assoc('max', max, state))));
 }
 
 function submitTitle(ev, state) {
@@ -19555,11 +19555,12 @@ function attrData(el) {
 }
 
 var editKey = function editKey(ev, state) {
-  if (state.editingKey) {
-    return _ramda2['default'].assoc('error', '', _ramda2['default'].assoc('editingKey', false, state));
-  } else {
-    return _ramda2['default'].assoc('error', 'Editing...', _ramda2['default'].assoc('editingKey', attrData(ev.target.parentElement), state));
+  var data = attrData(ev.target.parentElement);
+  var key = state.editingKey;
+  if (key && key.pc === data.pc && key.i === data.i) {
+    return _ramda2['default'].assoc('notice', '', _ramda2['default'].assoc('editingKey', false, state));
   }
+  return _ramda2['default'].assoc('notice', 'Editing...', _ramda2['default'].assoc('editingKey', data, state));
 };
 
 var proOrCon = function proOrCon(rating) {

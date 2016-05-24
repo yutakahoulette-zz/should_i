@@ -20,7 +20,7 @@ body {
   min-width: 600px;
 }
 
-main {
+#container {
   max-width: 900px;
   margin: 0 auto;
   padding: 10px;
@@ -34,16 +34,15 @@ main {
 }
 
 header {
+  white-space: pre;
   text-align: center;
   margin: 20px 0 40px 0;
-  white-space: pre;
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   max-width: 100%;
   display: inline-block;
 }
 
 input {
-  white-space: pre;
   background: transparent;
   max-width: 100%;
   border-top: none;
@@ -82,14 +81,14 @@ footer input {
   width: 12em;
 }
 
-p.error {
+p.notice {
   margin: 0 0 10px 0;
   padding: 0;
   line-height: 1;
   font-size: 15px;
 }
 
-p.error:before {
+p.notice:before {
   content: '.';
   visibility: hidden;
 }

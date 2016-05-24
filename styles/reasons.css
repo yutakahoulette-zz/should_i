@@ -7,7 +7,7 @@
   height: 100%;
 }
 
-.reasons section {
+.reasons figure {
   width: 100%;
   position: relative;
 }
@@ -41,12 +41,9 @@
   overflow: hidden;
  -webkit-transition: height ease-out 0.3s, opacity ease-out 0.1s; 
   -moz-transition: height ease-out 0.3s, opacity ease-out 0.1s; 
-  -o-transition: height ease-out 0.3s, opacity ease-out 0.1s; 
   transition: height ease-out 0.3s, opacity ease-out 0.1s; 
   -webkit-transform: translatez(0);
   -moz-transform: translatez(0);
-  -ms-transform: translatez(0);
-  -o-transform: translatez(0);
   transform: translatez(0);
 }
 
@@ -55,10 +52,13 @@
 }
 
 .reasons .close,
-.reasons .text {
+.reasons figcaption {
   font-size: 15px;
   color: white;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none; 
+  user-select: none; 
 }
 
 .close {
@@ -66,12 +66,8 @@
   position: absolute;
   right: 5px;
   top: 3px;
-  -webkit-user-select: none;  /* Chrome all / Safari all */
-  -moz-user-select: none;     /* Firefox all */
-  -ms-user-select: none;      /* IE 10+ */
-  user-select: none; 
 }
-
+  
 .reasons li:hover .close {
   display: initial;
 }
@@ -85,11 +81,23 @@
   border: none;
 }
 
-.reasons li .text {
-  padding-left: 5px;
+.reasons figcaption {
+  margin: 5px 19px 9 5px;
+  line-height: 1.3;
   font-weight: 200;
-  opacity: 0.6;
+  opacity: 0.7;
   letter-spacing: 0.6px;
+  display: inline-block;
+}
+
+.reasons li:hover figcaption,
+.reasons li.selected figcaption {
+  opacity: 0.95;
+  text-decoration: underline;
+}
+
+.reasons li:hover {
+  overflow: visible;
 }
 
 aside {

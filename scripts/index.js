@@ -15,11 +15,11 @@ let container = document.getElementById('container')
 
 function view(ctx) {
   console.log(ctx.state)
-  return h('main', [
+  return h('div#container', [
     header(ctx)
   , h('div.reasons', [
       h('aside', scale(ctx.state.max))
-    , h('section', [
+    , h('figure', [
         h('ul.cons', reasonsList(ctx, 'cons'))
       , h('ul.pros', reasonsList(ctx, 'pros'))
       ])
@@ -60,7 +60,7 @@ const reasonsList = (ctx, pc) =>
               remove: {opacity: '0'}}}
     , [
         h('span.close', {on: {click: ctx.streams.removeReason}}, '×')
-      , h('span.text', {on: {click: ctx.streams.editKey}}, reason.name)
+      , h('figcaption', {on: {click: ctx.streams.editKey}}, reason.name)
       ])
   , ctx.state.reasons[pc])
 
@@ -70,7 +70,7 @@ const selected = (editingKey, pc, i) =>
 const footer = (ctx) =>
   h('footer', [
     h('form', {on: {submit: ctx.streams.saveReason}}
-    , [ h('p.error', ctx.state.error)
+    , [ h('p.notice', ctx.state.notice)
       , h('input', {props: {
                       autocomplete: 'off'
                     , name: 'reason[name]'
@@ -111,7 +111,7 @@ function init(){
       reasons: {pros:[], cons:[]}
     , title: ''
     , max: 5
-    , error: ''
+    , notice: ''
     , focusProOrCon: false
     , editingKey: false
     }
@@ -126,13 +126,13 @@ function saveReason(ev, state) {
   let reason = serialize(form, {hash: true}).reason
   let plz = 'Please enter a '
   if(!reason) {
-    return R.assoc('error', `${plz} pro or con and a rating`, state)
+    return R.assoc('notice', `${plz} pro or con and a rating`, state)
   }
   if(!reason.name) {
-    return R.assoc('focusProOrCon', true, R.assoc('error', `${plz} pro or con`, state))
+    return R.assoc('focusProOrCon', true, R.assoc('notice', `${plz} pro or con`, state))
   }
   if(!reason.rating) {
-    return R.assoc('error', `${plz} rating`, state)
+    return R.assoc('notice', `${plz} rating`, state)
   }
   let pc = proOrCon(reason.rating)
   if(state.editingKey) {
@@ -145,7 +145,7 @@ function saveReason(ev, state) {
   form.reset()
   return R.assoc('editingKey', false
          , R.assoc('focusProOrCon', true
-         , R.assoc('error', ''
+         , R.assoc('notice', ''
          , R.assoc('max', max, state))))
 }
 
@@ -153,7 +153,6 @@ function submitTitle(ev, state) {
   ev.preventDefault()
   return R.assoc('focusProOrCon', true, state)
 }
-
 
 function removeReason(ev, state) {
   let data = attrData(ev.target.parentElement)
@@ -165,11 +164,12 @@ function attrData(el) {
 }
 
 const editKey = (ev, state) => {
-  if(state.editingKey) {
-    return R.assoc('error', '', R.assoc('editingKey', false, state))
-  } else { 
-    return R.assoc('error', 'Editing...', R.assoc('editingKey', attrData(ev.target.parentElement), state))
-  }
+  let data = attrData(ev.target.parentElement)
+  let key = state.editingKey
+  if(key && key.pc === data.pc && key.i === data.i) {
+    return R.assoc('notice', '', R.assoc('editingKey', false, state))
+  }  
+  return R.assoc('notice', 'Editing...', R.assoc('editingKey', data, state))
 }
 
 const proOrCon = (rating) => rating > 0 ? 'pros' : 'cons'
