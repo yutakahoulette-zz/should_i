@@ -64,8 +64,8 @@
 .close {
   display: none;
   position: absolute;
-  right: 5px;
-  top: 3px;
+  right: 7px;
+  top: 7px;
 }
   
 .reasons li:hover .close {

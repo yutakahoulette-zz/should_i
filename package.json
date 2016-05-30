@@ -1,12 +1,12 @@
 {
-  "name": "flimflam_sandbox",
+  "name": "should_i",
   "version": "0.0.0",
-  "description": "",
+  "description": "Decision making aid",
   "main": "index.js",
   "scripts": {
     "watch": "watchify -t babelify scripts/index.js -o scripts/build.js -v" 
   },
-  "author": "",
+  "author": "Yutaka Houlette",
   "license": "ISC",
   "dependencies": {
     "snabbdom": "~0.4.2",

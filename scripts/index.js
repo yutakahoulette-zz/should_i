@@ -6,6 +6,7 @@ import serialize from 'form-serialize'
 import getWidth from './element-width'
 import rating from './rating'
 import placeholders from './placeholders'
+import params from './params'
 
 const mapIndexed = R.addIndex(R.map)
 const randEl = (arr) => arr[Math.floor(Math.random() * arr.length)] 
@@ -15,6 +16,7 @@ let container = document.getElementById('container')
 
 function view(ctx) {
   console.log(ctx.state)
+  params.write(ctx.state)
   return h('div#container', [
     header(ctx)
   , h('div.reasons', [
@@ -43,7 +45,7 @@ const header = (ctx) =>
      'Should I'
     , h('form', {on: {submit: ctx.streams.submitTitle}}
       , [h('input'
-        , {props: { autofocus: true, placeholder: placeholder, autocomplete: 'off' }
+        , {props: {value: ctx.state.title, autofocus: true, placeholder: placeholder, autocomplete: 'off' }
           , style: { width: ctx.state.title 
             ? (getWidth(ctx.state.title, 'header') + 8 + 'px')
             : (getWidth(placeholder, 'header') + 8 + 'px')}
@@ -108,9 +110,9 @@ function init(){
     , editKey: editKey
     } 
   , state: {
-      reasons: {pros:[], cons:[]}
-    , title: ''
-    , max: 5
+      reasons: {pros: params.read.pros(), cons: params.read.cons()}
+    , title: params.read.title() 
+    , max: params.read.max() 
     , notice: ''
     , focusProOrCon: false
     , editingKey: false

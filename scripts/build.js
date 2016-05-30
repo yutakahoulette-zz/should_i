@@ -19427,6 +19427,10 @@ var _placeholders = require('./placeholders');
 
 var _placeholders2 = _interopRequireDefault(_placeholders);
 
+var _params = require('./params');
+
+var _params2 = _interopRequireDefault(_params);
+
 var mapIndexed = _ramda2['default'].addIndex(_ramda2['default'].map);
 var randEl = function randEl(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -19437,6 +19441,7 @@ var container = document.getElementById('container');
 
 function view(ctx) {
   console.log(ctx.state);
+  _params2['default'].write(ctx.state);
   return (0, _snabbdomH2['default'])('div#container', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('figure', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))])]), footer(ctx)]);
 }
 
@@ -19449,7 +19454,7 @@ var scale = function scale(max) {
 };
 
 var header = function header(ctx) {
-  return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submitTitle } }, [(0, _snabbdomH2['default'])('input', { props: { autofocus: true, placeholder: placeholder, autocomplete: 'off' },
+  return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submitTitle } }, [(0, _snabbdomH2['default'])('input', { props: { value: ctx.state.title, autofocus: true, placeholder: placeholder, autocomplete: 'off' },
     style: { width: ctx.state.title ? (0, _elementWidth2['default'])(ctx.state.title, 'header') + 8 + 'px' : (0, _elementWidth2['default'])(placeholder, 'header') + 8 + 'px' },
     on: { input: ctx.streams.saveTitle }
   })])]);
@@ -19502,9 +19507,9 @@ function init() {
       editKey: editKey
     },
     state: {
-      reasons: { pros: [], cons: [] },
-      title: '',
-      max: 5,
+      reasons: { pros: _params2['default'].read.pros(), cons: _params2['default'].read.cons() },
+      title: _params2['default'].read.title(),
+      max: _params2['default'].read.max(),
       notice: '',
       focusProOrCon: false,
       editingKey: false
@@ -19583,7 +19588,63 @@ var larger = function larger(a, b) {
 
 window.R = _ramda2['default'];
 
-},{"./element-width":"/Users/yutakahoulette/should_i/scripts/element-width.js","./placeholders":"/Users/yutakahoulette/should_i/scripts/placeholders.js","./rating":"/Users/yutakahoulette/should_i/scripts/rating.js","flimflam-render":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/index.js","flyd":"/Users/yutakahoulette/should_i/node_modules/flyd/lib/index.js","form-serialize":"/Users/yutakahoulette/should_i/node_modules/form-serialize/index.js","ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js","snabbdom/h":"/Users/yutakahoulette/should_i/node_modules/snabbdom/h.js"}],"/Users/yutakahoulette/should_i/scripts/placeholders.js":[function(require,module,exports){
+},{"./element-width":"/Users/yutakahoulette/should_i/scripts/element-width.js","./params":"/Users/yutakahoulette/should_i/scripts/params.js","./placeholders":"/Users/yutakahoulette/should_i/scripts/placeholders.js","./rating":"/Users/yutakahoulette/should_i/scripts/rating.js","flimflam-render":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/index.js","flyd":"/Users/yutakahoulette/should_i/node_modules/flyd/lib/index.js","form-serialize":"/Users/yutakahoulette/should_i/node_modules/form-serialize/index.js","ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js","snabbdom/h":"/Users/yutakahoulette/should_i/node_modules/snabbdom/h.js"}],"/Users/yutakahoulette/should_i/scripts/params.js":[function(require,module,exports){
+'use strict';
+
+var R = require('ramda');
+
+var params = {};
+
+params.write = function (state) {
+  location.hash = '' + encode(state.title) + ('@' + stringify(state.reasons.pros)) + ('@' + stringify(state.reasons.cons)) + ('@' + (state.max || ''));
+};
+
+params.read = {
+  title: function title() {
+    return !ithHash(0) || ithHash(0) === '#' ? '' : decode(ithHash(0).substr(1)).trim();
+  },
+  pros: function pros() {
+    return ithHash(1) ? paramsToReasons(1) : [];
+  },
+  cons: function cons() {
+    return ithHash(2) ? paramsToReasons(2) : [];
+  },
+  max: function max() {
+    return ithHash(3) ? ithHash(3) : 5;
+  }
+};
+
+function paramsToReasons(i) {
+  var arr = R.dropLast(1, ithHash(i).split('?'));
+  return R.map(reasonObj, arr);
+}
+
+function reasonObj(x) {
+  var reason = x.split('&');
+  return { name: R.drop(2, reason[0]), rating: R.drop(2, reason[1]) };
+}
+
+var ithHash = function ithHash(i) {
+  return location.hash ? location.hash.split('@')[i] : false;
+};
+
+var stringify = function stringify(arr) {
+  return R.reduce(function (a, b) {
+    return a + ('n=' + encode(b.name) + '&r=' + encode(b.rating) + '?');
+  }, '', arr);
+};
+
+var encode = function encode(string) {
+  return encodeURIComponent(string);
+};
+
+var decode = function decode(string) {
+  return decodeURIComponent(string);
+};
+
+module.exports = params;
+
+},{"ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js"}],"/Users/yutakahoulette/should_i/scripts/placeholders.js":[function(require,module,exports){
 'use strict';
 
 var placeholders = ['get married', 'have kids', 'go to college', 'try LSD', 'shave my head', 'go on strike', 'become vegan', 'quit my job', 'start a band', 'quit my band', 'hitchhike', 'vote', 'live abroad', 'leave the city', 'leave the suburbs', 'leave the country', 'change careers', 'call the cops on my neighbors', 'give money to the homeless guy', 'save money for a house', 'quit Facebook', 'sell my car', 'start a business', 'try Ayahuasca'];
