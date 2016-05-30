@@ -19621,7 +19621,7 @@ function paramsToReasons(i) {
 
 function reasonObj(x) {
   var reason = x.split('&');
-  return { name: R.drop(2, reason[0]), rating: R.drop(2, reason[1]) };
+  return { name: reason[0], rating: reason[1] };
 }
 
 var ithHash = function ithHash(i) {
@@ -19630,7 +19630,7 @@ var ithHash = function ithHash(i) {
 
 var stringify = function stringify(arr) {
   return R.reduce(function (a, b) {
-    return a + ('n=' + encode(b.name) + '&r=' + encode(b.rating) + '?');
+    return a + (encode(b.name) + '&' + encode(b.rating) + '?');
   }, '', arr);
 };
 

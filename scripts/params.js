@@ -23,13 +23,13 @@ function paramsToReasons(i) {
 
 function reasonObj(x) {
   let reason = x.split('&')      
-  return {name: R.drop(2, reason[0]), rating: R.drop(2, reason[1])}
+  return {name: reason[0], rating: reason[1]}
 }
 
 const ithHash = (i) => location.hash ? location.hash.split('@')[i] : false
 
 const stringify = (arr) => R.reduce(
-    (a,b) => a + `n=${encode(b.name)}&r=${encode(b.rating)}?`, '' , arr) 
+    (a,b) => a + `${encode(b.name)}&${encode(b.rating)}?`, '' , arr) 
 
 const encode = (string) => encodeURIComponent(string)
 
