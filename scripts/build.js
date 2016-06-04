@@ -19536,10 +19536,17 @@ function saveReason(ev, state) {
     return _ramda2['default'].assoc('notice', plz + ' rating', state);
   }
   var pc = proOrCon(reason.rating);
-  if (state.editingKey) {
-    state = _ramda2['default'].assocPath(['reasons', state.editingKey.pc], _ramda2['default'].remove(state.editingKey.i, 1, state.reasons[state.editingKey.pc]), state);
+  var editingPc = state.editingKey.pc;
+  if (state.editingKey && pc != editingPc) {
+    state = _ramda2['default'].assocPath(['reasons', editingPc], _ramda2['default'].remove(state.editingKey.i, 1, state.reasons[state.editingKey.pc]), state);
   }
-  state = _ramda2['default'].assocPath(['reasons', pc], _ramda2['default'].append(reason, state.reasons[pc]), state);
+  if (state.editingKey && pc === editingPc) {
+    state = _ramda2['default'].assocPath(['reasons', editingPc], _ramda2['default'].update(state.editingKey.i, reason, state.reasons[editingPc]), state);
+  }
+  if (state.editingKey && pc != editingPc || !state.editingKey) {
+    state = _ramda2['default'].assocPath(['reasons', pc], _ramda2['default'].append(reason, state.reasons[pc]), state);
+  }
+
   var max = larger(totalIn('rating', state.reasons.pros), totalIn('rating', state.reasons.cons));
   form.reset();
   return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('notice', '', _ramda2['default'].assoc('max', max, state))));
@@ -19621,7 +19628,7 @@ function paramsToReasons(i) {
 
 function reasonObj(x) {
   var reason = x.split('&');
-  return { name: reason[0], rating: reason[1] };
+  return { name: decode(reason[0]), rating: reason[1] };
 }
 
 var ithHash = function ithHash(i) {

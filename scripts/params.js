@@ -23,7 +23,7 @@ function paramsToReasons(i) {
 
 function reasonObj(x) {
   let reason = x.split('&')      
-  return {name: reason[0], rating: reason[1]}
+  return {name: decode(reason[0]), rating: reason[1]}
 }
 
 const ithHash = (i) => location.hash ? location.hash.split('@')[i] : false

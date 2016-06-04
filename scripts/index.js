@@ -137,12 +137,21 @@ function saveReason(ev, state) {
     return R.assoc('notice', `${plz} rating`, state)
   }
   let pc = proOrCon(reason.rating)
-  if(state.editingKey) {
-    state = R.assocPath(['reasons', state.editingKey.pc]
+  let editingPc = state.editingKey.pc 
+  if(state.editingKey && pc != editingPc) {
+    state = R.assocPath(['reasons', editingPc]
                       , R.remove(state.editingKey.i, 1, state.reasons[state.editingKey.pc])
                       , state)    
+  } 
+  if(state.editingKey && pc === editingPc) {
+    state = R.assocPath(['reasons', editingPc]
+                      , R.update(state.editingKey.i, reason, state.reasons[editingPc])
+                      , state)    
+  } 
+  if((state.editingKey && pc != editingPc) || !state.editingKey) {
+    state = R.assocPath(['reasons', pc], R.append(reason, state.reasons[pc]), state)    
   }
-  state = R.assocPath(['reasons', pc], R.append(reason, state.reasons[pc]), state)    
+
   let max = larger(totalIn('rating', state.reasons.pros), totalIn('rating', state.reasons.cons)) 
   form.reset()
   return R.assoc('editingKey', false
