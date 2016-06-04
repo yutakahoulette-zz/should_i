@@ -19454,10 +19454,9 @@ var scale = function scale(max) {
 };
 
 var header = function header(ctx) {
-  return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('form', { on: { submit: ctx.streams.submitTitle } }, [(0, _snabbdomH2['default'])('input', { props: { value: ctx.state.title, autofocus: true, placeholder: placeholder, autocomplete: 'off' },
-    style: { width: ctx.state.title ? (0, _elementWidth2['default'])(ctx.state.title, 'header') + 8 + 'px' : (0, _elementWidth2['default'])(placeholder, 'header') + 8 + 'px' },
-    on: { input: ctx.streams.saveTitle }
-  })])]);
+  return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('span', { props: { contentEditable: true },
+    on: { keydown: ctx.streams.submitTitle, input: ctx.streams.saveTitle }
+  }, ctx.state.title)]);
 };
 
 var reasonsList = function reasonsList(ctx, pc) {
@@ -19517,9 +19516,9 @@ function init() {
   };
 }
 
-var saveTitle = function saveTitle(ev, state) {
-  return _ramda2['default'].assoc('focusProOrCon', false, _ramda2['default'].assoc('title', ev.target.value, state));
-};
+function saveTitle(ev, state) {
+  return _ramda2['default'].assoc('title', ev.target.textContent, state);
+}
 
 function saveReason(ev, state) {
   ev.preventDefault();
@@ -19553,8 +19552,11 @@ function saveReason(ev, state) {
 }
 
 function submitTitle(ev, state) {
-  ev.preventDefault();
-  return _ramda2['default'].assoc('focusProOrCon', true, state);
+  if (ev.which === 13) {
+    ev.preventDefault();
+    return _ramda2['default'].assoc('focusProOrCon', true, state);
+  }
+  return _ramda2['default'].assoc('focusProOrCon', false, state);
 }
 
 function removeReason(ev, state) {

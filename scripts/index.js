@@ -43,15 +43,12 @@ const scale = (max) =>
 const header = (ctx) =>
   h('header', [ 
      'Should I'
-    , h('form', {on: {submit: ctx.streams.submitTitle}}
-      , [h('input'
-        , {props: {value: ctx.state.title, autofocus: true, placeholder: placeholder, autocomplete: 'off' }
-          , style: { width: ctx.state.title 
-            ? (getWidth(ctx.state.title, 'header') + 8 + 'px')
-            : (getWidth(placeholder, 'header') + 8 + 'px')}
-          , on: {input: ctx.streams.saveTitle}
-          })
-      ])
+    , h('span'
+      , {props: {contentEditable: true}
+        , on: {keydown: ctx.streams.submitTitle, input: ctx.streams.saveTitle}
+        }
+      , ctx.state.title
+      )
     ])
 
 const reasonsList = (ctx, pc) => 
@@ -120,7 +117,9 @@ function init(){
   }
 }
 
-const saveTitle = (ev, state) => R.assoc('focusProOrCon', false, R.assoc('title' , ev.target.value , state))
+function saveTitle(ev, state) { 
+  return R.assoc('title' , ev.target.textContent , state)
+}
 
 function saveReason(ev, state) {
   ev.preventDefault()
@@ -161,8 +160,11 @@ function saveReason(ev, state) {
 }
 
 function submitTitle(ev, state) {
-  ev.preventDefault()
-  return R.assoc('focusProOrCon', true, state)
+  if(ev.which === 13) { 
+    ev.preventDefault() 
+    return R.assoc('focusProOrCon', true, state)
+  }
+  return R.assoc('focusProOrCon', false, state)
 }
 
 function removeReason(ev, state) {
