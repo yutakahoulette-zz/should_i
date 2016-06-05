@@ -19454,9 +19454,18 @@ var scale = function scale(max) {
 };
 
 var header = function header(ctx) {
-  return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('span', { props: { contentEditable: true },
-    on: { keydown: ctx.streams.submitTitle, input: ctx.streams.saveTitle }
-  }, ctx.state.title)]);
+  return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('br'), (0, _snabbdomH2['default'])('div.fluidInput-wrapper', [(0, _snabbdomH2['default'])('span.fluidInput-placeholder', { style: { display: ctx.state.title ? 'none' : 'initial' } }, placeholder), (0, _snabbdomH2['default'])('span.fluidInput-input', { props: { contentEditable: true },
+    on: { keydown: ctx.streams.submitTitle, input: ctx.streams.saveTitle },
+    hook: {
+      insert: function insert(vnode) {
+        if (ctx.state.title) {
+          vnode.elm.textContent = ctx.state.title;
+        } else {
+          vnode.elm.focus();
+        }
+      }
+    }
+  }), (0, _snabbdomH2['default'])('span.fluidInput-spacer', ctx.state.title)])]);
 };
 
 var reasonsList = function reasonsList(ctx, pc) {

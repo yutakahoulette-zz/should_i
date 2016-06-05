@@ -3,6 +3,7 @@
 @import 'reasons.css';
 @import 'rating.css';
 @import 'colors.css';
+@import 'header.css';
 
 * {
   -moz-box-sizing: border-box;
@@ -33,15 +34,6 @@ body {
   justify-content: space-between;
 }
 
-header {
-  white-space: pre;
-  text-align: center;
-  margin: 20px 0 40px 0;
-  font-size: 1.6rem;
-  max-width: 100%;
-  display: inline-block;
-}
-
 input {
   background: transparent;
   max-width: 100%;
@@ -66,10 +58,6 @@ input {
 input:focus {
   outline: transparent;
   border-bottom-color: rgba(0,0,0,0.5);
-}
-
-header form:after {
-  content: '?';
 }
 
 footer {

@@ -43,12 +43,27 @@ const scale = (max) =>
 const header = (ctx) =>
   h('header', [ 
      'Should I'
-    , h('span'
-      , {props: {contentEditable: true}
-        , on: {keydown: ctx.streams.submitTitle, input: ctx.streams.saveTitle}
-        }
-      , ctx.state.title
-      )
+    , h('br')
+    , h('div.fluidInput-wrapper', [
+        h('span.fluidInput-placeholder' 
+          , {style: {display: ctx.state.title ? 'none' : 'initial'}}
+          , placeholder)
+      , h('span.fluidInput-input'
+        , {props: {contentEditable: true}
+          , on: {keydown: ctx.streams.submitTitle, input: ctx.streams.saveTitle}
+          , hook: {
+              insert: (vnode) => { 
+                if (ctx.state.title) {
+                  vnode.elm.textContent = ctx.state.title 
+                } else {
+                  vnode.elm.focus() 
+                }
+              }
+            }
+          }
+        )
+      , h('span.fluidInput-spacer', ctx.state.title)
+      ])
     ])
 
 const reasonsList = (ctx, pc) => 

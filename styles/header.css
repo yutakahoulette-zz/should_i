@@ -1,0 +1,36 @@
+header {
+  text-align: center;
+  margin: 20px 0 40px 0;
+  font-size: 1.6rem;
+}
+
+.fluidInput-wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+  border-bottom: 2px solid rgba(0,0,0,0.2);
+}
+
+
+.fluidInput-wrapper:after {
+  content: ' ?';
+}
+
+.fluidInput-placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+.fluidInput-spacer {
+  text-align: left;
+  color: rgba(0, 0, 0, 0);
+}
+
+.fluidInput-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-align: left;
+  width: 100%;
+}
+
