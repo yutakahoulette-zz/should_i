@@ -19376,20 +19376,6 @@ module.exports = function h(sel, b, c) {
 arguments[4]["/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/is.js"][0].apply(exports,arguments)
 },{}],"/Users/yutakahoulette/should_i/node_modules/snabbdom/vnode.js":[function(require,module,exports){
 arguments[4]["/Users/yutakahoulette/should_i/node_modules/flimflam-render/node_modules/snabbdom/vnode.js"][0].apply(exports,arguments)
-},{}],"/Users/yutakahoulette/should_i/scripts/element-width.js":[function(require,module,exports){
-'use strict';
-
-function getWidth(str, el) {
-  var tmp = document.createElement(el);
-  tmp.innerHTML = str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  document.body.appendChild(tmp);
-  var width = tmp.getBoundingClientRect().width;
-  document.body.removeChild(tmp);
-  return width;
-}
-
-module.exports = getWidth;
-
 },{}],"/Users/yutakahoulette/should_i/scripts/index.js":[function(require,module,exports){
 'use strict';
 
@@ -19415,10 +19401,6 @@ var _formSerialize = require('form-serialize');
 
 var _formSerialize2 = _interopRequireDefault(_formSerialize);
 
-var _elementWidth = require('./element-width');
-
-var _elementWidth2 = _interopRequireDefault(_elementWidth);
-
 var _rating = require('./rating');
 
 var _rating2 = _interopRequireDefault(_rating);
@@ -19440,7 +19422,6 @@ var placeholder = randEl(_placeholders2['default']);
 var container = document.getElementById('container');
 
 function view(ctx) {
-  console.log(ctx.state);
   _params2['default'].write(ctx.state);
   return (0, _snabbdomH2['default'])('div#container', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('figure', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))])]), footer(ctx)]);
 }
@@ -19454,18 +19435,16 @@ var scale = function scale(max) {
 };
 
 var header = function header(ctx) {
-  return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('br'), (0, _snabbdomH2['default'])('div.fluidInput-wrapper', [(0, _snabbdomH2['default'])('span.fluidInput-placeholder', { style: { display: ctx.state.title ? 'none' : 'initial' } }, placeholder), (0, _snabbdomH2['default'])('span.fluidInput-input', { props: { contentEditable: true },
+  return (0, _snabbdomH2['default'])('header', ['Should I', (0, _snabbdomH2['default'])('br'), (0, _snabbdomH2['default'])('div.fluidInput-wrapper', [(0, _snabbdomH2['default'])('input.fluidInput-input', { props: { value: ctx.state.title, placeholder: placeholder },
     on: { keydown: ctx.streams.submitTitle, input: ctx.streams.saveTitle },
     hook: {
       insert: function insert(vnode) {
-        if (ctx.state.title) {
-          vnode.elm.textContent = ctx.state.title;
-        } else {
+        if (!ctx.state.title) {
           vnode.elm.focus();
         }
       }
     }
-  }), (0, _snabbdomH2['default'])('span.fluidInput-spacer', ctx.state.title)])]);
+  }), (0, _snabbdomH2['default'])('span.fluidInput-spacer', ctx.state.title ? ctx.state.title : placeholder)])]);
 };
 
 var reasonsList = function reasonsList(ctx, pc) {
@@ -19526,7 +19505,7 @@ function init() {
 }
 
 function saveTitle(ev, state) {
-  return _ramda2['default'].assoc('title', ev.target.textContent, state);
+  return _ramda2['default'].assoc('title', ev.target.value, state);
 }
 
 function saveReason(ev, state) {
@@ -19570,7 +19549,7 @@ function submitTitle(ev, state) {
 
 function removeReason(ev, state) {
   var data = attrData(ev.target.parentElement);
-  return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assocPath(['reasons', data.pc], _ramda2['default'].remove(data.i, 1, state.reasons[data.pc]), state));
+  return _ramda2['default'].assoc('notice', '', _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assocPath(['reasons', data.pc], _ramda2['default'].remove(data.i, 1, state.reasons[data.pc]), state)));
 }
 
 function attrData(el) {
@@ -19606,7 +19585,7 @@ var larger = function larger(a, b) {
 
 window.R = _ramda2['default'];
 
-},{"./element-width":"/Users/yutakahoulette/should_i/scripts/element-width.js","./params":"/Users/yutakahoulette/should_i/scripts/params.js","./placeholders":"/Users/yutakahoulette/should_i/scripts/placeholders.js","./rating":"/Users/yutakahoulette/should_i/scripts/rating.js","flimflam-render":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/index.js","flyd":"/Users/yutakahoulette/should_i/node_modules/flyd/lib/index.js","form-serialize":"/Users/yutakahoulette/should_i/node_modules/form-serialize/index.js","ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js","snabbdom/h":"/Users/yutakahoulette/should_i/node_modules/snabbdom/h.js"}],"/Users/yutakahoulette/should_i/scripts/params.js":[function(require,module,exports){
+},{"./params":"/Users/yutakahoulette/should_i/scripts/params.js","./placeholders":"/Users/yutakahoulette/should_i/scripts/placeholders.js","./rating":"/Users/yutakahoulette/should_i/scripts/rating.js","flimflam-render":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/index.js","flyd":"/Users/yutakahoulette/should_i/node_modules/flyd/lib/index.js","form-serialize":"/Users/yutakahoulette/should_i/node_modules/form-serialize/index.js","ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js","snabbdom/h":"/Users/yutakahoulette/should_i/node_modules/snabbdom/h.js"}],"/Users/yutakahoulette/should_i/scripts/params.js":[function(require,module,exports){
 'use strict';
 
 var R = require('ramda');
@@ -19665,7 +19644,7 @@ module.exports = params;
 },{"ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js"}],"/Users/yutakahoulette/should_i/scripts/placeholders.js":[function(require,module,exports){
 'use strict';
 
-var placeholders = ['get married', 'have kids', 'go to college', 'try LSD', 'shave my head', 'go on strike', 'become vegan', 'quit my job', 'start a band', 'quit my band', 'hitchhike', 'vote', 'live abroad', 'leave the city', 'leave the suburbs', 'leave the country', 'change careers', 'call the cops on my neighbors', 'give money to the homeless guy', 'save money for a house', 'quit Facebook', 'sell my car', 'start a business', 'try Ayahuasca'];
+var placeholders = ['get married', 'have kids', 'go to college', 'try LSD', 'shave my head', 'go on strike', 'become vegan', 'quit my job', 'start a band', 'quit my band', 'hitchhike', 'vote', 'live abroad', 'leave the city', 'leave the suburbs', 'leave the country', 'change careers', 'call the cops on my neighbors', 'give money to the homeless guy', 'save money for a house', 'quit Facebook', 'sell my car', 'start a business', 'try Ayahuasca', 'go to grad school'];
 
 module.exports = placeholders;
 

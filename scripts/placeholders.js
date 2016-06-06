@@ -23,6 +23,7 @@ const placeholders = [
 , 'sell my car'
 , 'start a business'
 , 'try Ayahuasca'
+, 'go to grad school'
 ]
 
 module.exports = placeholders

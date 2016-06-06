@@ -3,7 +3,6 @@ import render from 'flimflam-render'
 import R from 'ramda'
 import flyd from 'flyd'
 import serialize from 'form-serialize'
-import getWidth from './element-width'
 import rating from './rating'
 import placeholders from './placeholders'
 import params from './params'
@@ -15,7 +14,6 @@ let placeholder = randEl(placeholders)
 let container = document.getElementById('container')
 
 function view(ctx) {
-  console.log(ctx.state)
   params.write(ctx.state)
   return h('div#container', [
     header(ctx)
@@ -45,24 +43,19 @@ const header = (ctx) =>
      'Should I'
     , h('br')
     , h('div.fluidInput-wrapper', [
-        h('span.fluidInput-placeholder' 
-          , {style: {display: ctx.state.title ? 'none' : 'initial'}}
-          , placeholder)
-      , h('span.fluidInput-input'
-        , {props: {contentEditable: true}
+        h('input.fluidInput-input'
+        , {props: {value: ctx.state.title, placeholder: placeholder}
           , on: {keydown: ctx.streams.submitTitle, input: ctx.streams.saveTitle}
           , hook: {
               insert: (vnode) => { 
-                if (ctx.state.title) {
-                  vnode.elm.textContent = ctx.state.title 
-                } else {
+                if (!ctx.state.title) {
                   vnode.elm.focus() 
                 }
               }
             }
           }
         )
-      , h('span.fluidInput-spacer', ctx.state.title)
+      , h('span.fluidInput-spacer', ctx.state.title ? ctx.state.title : placeholder)
       ])
     ])
 
@@ -133,7 +126,7 @@ function init(){
 }
 
 function saveTitle(ev, state) { 
-  return R.assoc('title' , ev.target.textContent , state)
+  return R.assoc('title' , ev.target.value , state)
 }
 
 function saveReason(ev, state) {
@@ -184,7 +177,7 @@ function submitTitle(ev, state) {
 
 function removeReason(ev, state) {
   let data = attrData(ev.target.parentElement)
-  return R.assoc('editingKey', false, R.assocPath(['reasons', data.pc], R.remove(data.i, 1, state.reasons[data.pc]), state))
+  return R.assoc('notice', '', R.assoc('editingKey', false, R.assocPath(['reasons', data.pc], R.remove(data.i, 1, state.reasons[data.pc]), state)))
 }
 
 function attrData(el) {

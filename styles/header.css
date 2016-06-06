@@ -1,7 +1,7 @@
 header {
   text-align: center;
   margin: 20px 0 40px 0;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
 }
 
 .fluidInput-wrapper {
@@ -10,23 +10,17 @@ header {
   overflow: hidden;
   white-space: nowrap;
   max-width: 100%;
-  border-bottom: 2px solid rgba(0,0,0,0.2);
+  padding-right: 22px;
+  padding-bottom: 5px;
 }
 
-
-.fluidInput-wrapper:after {
-  content: ' ?';
-}
-
-.fluidInput-placeholder {
-  color: rgba(0, 0, 0, 0.3);
-}
 .fluidInput-spacer {
-  text-align: left;
-  color: rgba(0, 0, 0, 0);
+  visibility: hidden;
+  white-space: pre;
 }
 
 .fluidInput-input {
+  white-space: pre;
   position: absolute;
   left: 0;
   top: 0;
@@ -34,3 +28,10 @@ header {
   width: 100%;
 }
 
+.fluidInput-wrapper:after {
+  position: absolute;
+  right: 0;
+  padding: 0 0 6px 6px; 
+  background: #FFF7ED;
+  content: '?' 
+}
