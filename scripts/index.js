@@ -4,24 +4,27 @@ import R from 'ramda'
 import flyd from 'flyd'
 import serialize from 'form-serialize'
 import rating from './rating'
-import placeholders from './placeholders'
 import params from './params'
 
 const mapIndexed = R.addIndex(R.map)
 const randEl = (arr) => arr[Math.floor(Math.random() * arr.length)] 
 
-let placeholder = randEl(placeholders)
+let placeholder = '. . . ' 
 let container = document.getElementById('container')
 
 function view(ctx) {
+  window.state = ctx.state
   params.write(ctx.state)
   return h('div#container', [
     header(ctx)
   , h('div.reasons', [
-      h('aside', scale(ctx.state.max))
-    , h('figure', [
+      h('figure', [
         h('ul.cons', reasonsList(ctx, 'cons'))
       , h('ul.pros', reasonsList(ctx, 'pros'))
+      ])
+    , h('div.reasons-legend', [
+        h('span', `Cons: -${ctx.state.totals().cons}`)
+      , h('span', `Pros: ${ctx.state.totals().pros}`)
       ])
     ])
   , footer(ctx)
@@ -29,14 +32,6 @@ function view(ctx) {
 }
 
 const round = (a) => Math.round(a * 10) / 10
-
-const scale = (max) =>
-  [ h('span', max + ' -')
-  , h('span', round(max * 0.75) + ' -')
-  , h('span', round(max * 0.5) + ' -')
-  , h('span', round(max * 0.25) + ' -')
-  , h('span', 0 + ' -')
-  ]
 
 const header = (ctx) =>
   h('header', [ 
@@ -66,8 +61,12 @@ const reasonsList = (ctx, pc) =>
     , style: {delayed:  {height: `${(Math.abs(reason.rating) / ctx.state.max) * 100}%`, opacity: '1'},
               remove: {opacity: '0'}}}
     , [
-        h('span.close', {on: {click: ctx.streams.removeReason}}, '×')
-      , h('figcaption', {on: {click: ctx.streams.editKey}}, reason.name)
+        h('span.close'
+          , {on: {click: ctx.streams.removeReason}}
+          , '×')
+      , h('figcaption'
+        , {on: {click: ctx.streams.editKey}}
+        , `${reason.name} (${reason.rating})`)
       ])
   , ctx.state.reasons[pc])
 
@@ -118,6 +117,9 @@ function init(){
       reasons: {pros: params.read.pros(), cons: params.read.cons()}
     , title: params.read.title() 
     , max: params.read.max() 
+    , totals: function() {
+        return {pros: totalIn('rating', this.reasons.pros), cons: totalIn('rating', this.reasons.cons)     }
+      }
     , notice: ''
     , focusProOrCon: false
     , editingKey: false
@@ -159,7 +161,7 @@ function saveReason(ev, state) {
     state = R.assocPath(['reasons', pc], R.append(reason, state.reasons[pc]), state)    
   }
 
-  let max = larger(totalIn('rating', state.reasons.pros), totalIn('rating', state.reasons.cons)) 
+  let max = larger(state.totals().pros, state.totals().cons) 
   form.reset()
   return R.assoc('editingKey', false
          , R.assoc('focusProOrCon', true

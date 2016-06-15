@@ -2,7 +2,6 @@
 @import 'fonts.css';
 @import 'reasons.css';
 @import 'rating.css';
-@import 'colors.css';
 @import 'header.css';
 
 * {
@@ -13,6 +12,7 @@
 html {
   border: 5px solid rgba(0,0,0,0.5);
   padding: 5px;
+  background: #FFF7ED;
 }
 
 body {

@@ -19405,10 +19405,6 @@ var _rating = require('./rating');
 
 var _rating2 = _interopRequireDefault(_rating);
 
-var _placeholders = require('./placeholders');
-
-var _placeholders2 = _interopRequireDefault(_placeholders);
-
 var _params = require('./params');
 
 var _params2 = _interopRequireDefault(_params);
@@ -19418,20 +19414,17 @@ var randEl = function randEl(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
-var placeholder = randEl(_placeholders2['default']);
+var placeholder = '. . . ';
 var container = document.getElementById('container');
 
 function view(ctx) {
+  window.state = ctx.state;
   _params2['default'].write(ctx.state);
-  return (0, _snabbdomH2['default'])('div#container', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('aside', scale(ctx.state.max)), (0, _snabbdomH2['default'])('figure', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))])]), footer(ctx)]);
+  return (0, _snabbdomH2['default'])('div#container', [header(ctx), (0, _snabbdomH2['default'])('div.reasons', [(0, _snabbdomH2['default'])('figure', [(0, _snabbdomH2['default'])('ul.cons', reasonsList(ctx, 'cons')), (0, _snabbdomH2['default'])('ul.pros', reasonsList(ctx, 'pros'))]), (0, _snabbdomH2['default'])('div.reasons-legend', [(0, _snabbdomH2['default'])('span', 'Cons: -' + ctx.state.totals().cons), (0, _snabbdomH2['default'])('span', 'Pros: ' + ctx.state.totals().pros)])]), footer(ctx)]);
 }
 
 var round = function round(a) {
   return Math.round(a * 10) / 10;
-};
-
-var scale = function scale(max) {
-  return [(0, _snabbdomH2['default'])('span', max + ' -'), (0, _snabbdomH2['default'])('span', round(max * 0.75) + ' -'), (0, _snabbdomH2['default'])('span', round(max * 0.5) + ' -'), (0, _snabbdomH2['default'])('span', round(max * 0.25) + ' -'), (0, _snabbdomH2['default'])('span', 0 + ' -')];
 };
 
 var header = function header(ctx) {
@@ -19453,7 +19446,7 @@ var reasonsList = function reasonsList(ctx, pc) {
       attrs: { index: i, rating: reason.rating },
       'class': { selected: selected(ctx.state.editingKey, pc, i) },
       style: { delayed: { height: Math.abs(reason.rating) / ctx.state.max * 100 + '%', opacity: '1' },
-        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×'), (0, _snabbdomH2['default'])('figcaption', { on: { click: ctx.streams.editKey } }, reason.name)]);
+        remove: { opacity: '0' } } }, [(0, _snabbdomH2['default'])('span.close', { on: { click: ctx.streams.removeReason } }, '×'), (0, _snabbdomH2['default'])('figcaption', { on: { click: ctx.streams.editKey } }, reason.name + ' (' + reason.rating + ')')]);
   }, ctx.state.reasons[pc]);
 };
 
@@ -19497,6 +19490,9 @@ function init() {
       reasons: { pros: _params2['default'].read.pros(), cons: _params2['default'].read.cons() },
       title: _params2['default'].read.title(),
       max: _params2['default'].read.max(),
+      totals: function totals() {
+        return { pros: totalIn('rating', this.reasons.pros), cons: totalIn('rating', this.reasons.cons) };
+      },
       notice: '',
       focusProOrCon: false,
       editingKey: false
@@ -19534,7 +19530,7 @@ function saveReason(ev, state) {
     state = _ramda2['default'].assocPath(['reasons', pc], _ramda2['default'].append(reason, state.reasons[pc]), state);
   }
 
-  var max = larger(totalIn('rating', state.reasons.pros), totalIn('rating', state.reasons.cons));
+  var max = larger(state.totals().pros, state.totals().cons);
   form.reset();
   return _ramda2['default'].assoc('editingKey', false, _ramda2['default'].assoc('focusProOrCon', true, _ramda2['default'].assoc('notice', '', _ramda2['default'].assoc('max', max, state))));
 }
@@ -19585,7 +19581,7 @@ var larger = function larger(a, b) {
 
 window.R = _ramda2['default'];
 
-},{"./params":"/Users/yutakahoulette/should_i/scripts/params.js","./placeholders":"/Users/yutakahoulette/should_i/scripts/placeholders.js","./rating":"/Users/yutakahoulette/should_i/scripts/rating.js","flimflam-render":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/index.js","flyd":"/Users/yutakahoulette/should_i/node_modules/flyd/lib/index.js","form-serialize":"/Users/yutakahoulette/should_i/node_modules/form-serialize/index.js","ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js","snabbdom/h":"/Users/yutakahoulette/should_i/node_modules/snabbdom/h.js"}],"/Users/yutakahoulette/should_i/scripts/params.js":[function(require,module,exports){
+},{"./params":"/Users/yutakahoulette/should_i/scripts/params.js","./rating":"/Users/yutakahoulette/should_i/scripts/rating.js","flimflam-render":"/Users/yutakahoulette/should_i/node_modules/flimflam-render/index.js","flyd":"/Users/yutakahoulette/should_i/node_modules/flyd/lib/index.js","form-serialize":"/Users/yutakahoulette/should_i/node_modules/form-serialize/index.js","ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js","snabbdom/h":"/Users/yutakahoulette/should_i/node_modules/snabbdom/h.js"}],"/Users/yutakahoulette/should_i/scripts/params.js":[function(require,module,exports){
 'use strict';
 
 var R = require('ramda');
@@ -19641,14 +19637,7 @@ var decode = function decode(string) {
 
 module.exports = params;
 
-},{"ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js"}],"/Users/yutakahoulette/should_i/scripts/placeholders.js":[function(require,module,exports){
-'use strict';
-
-var placeholders = ['get married', 'have kids', 'go to college', 'try LSD', 'shave my head', 'go on strike', 'become vegan', 'quit my job', 'start a band', 'quit my band', 'hitchhike', 'vote', 'live abroad', 'leave the city', 'leave the suburbs', 'leave the country', 'change careers', 'call the cops on my neighbors', 'give money to the homeless guy', 'save money for a house', 'quit Facebook', 'sell my car', 'start a business', 'try Ayahuasca', 'go to grad school'];
-
-module.exports = placeholders;
-
-},{}],"/Users/yutakahoulette/should_i/scripts/rating.js":[function(require,module,exports){
+},{"ramda":"/Users/yutakahoulette/should_i/node_modules/ramda/dist/ramda.js"}],"/Users/yutakahoulette/should_i/scripts/rating.js":[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
